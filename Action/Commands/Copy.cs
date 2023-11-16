@@ -39,7 +39,13 @@ public class Copy: Command {
 				opts |= CopyOptions.FailIfExists;
 			}
 
-			File.CopyTransacted(c.Tx, p, dest, opts);
+			var res = Directory.ExistsTransacted(c.Tx, p)
+			? Directory.CopyTransacted(c.Tx, p, dest, opts, this.Force)
+			: File.CopyTransacted(c.Tx, p, dest, opts | CopyOptions.OpenSourceForWrite);
+
+			if (res.ErrorCode != 0) {
+				throw new IOException($"error copying {p} to {dest}: {res.ErrorMessage}");
+			}
 		}
 	}
 }

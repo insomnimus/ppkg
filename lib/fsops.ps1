@@ -233,12 +233,10 @@ function :mv {
 				$dest = $destIsDir ? (join-path $destination $f.name) : $destination
 				trace "moving $f to $dest"
 
-				$opts = if($force -and -not $f.IsDirectory) {
-					[Alphaleonis.Win32.Filesystem.MoveOptions]::ReplaceExisting
-				} else {
-					[Alphaleonis.Win32.Filesystem.MoveOptions]::None
+	$opts = [Alphaleonis.Win32.Filesystem.MoveOptions]::CopyAllowed -bor [Alphaleonis.Win32.Filesystem.MoveOptions]::WriteThrough
+				if($force -and -not $f.IsDirectory) {
+					$opts += [Alphaleonis.Win32.Filesystem.MoveOptions]::ReplaceExisting
 				}
-				$opts += [Alphaleonis.Win32.Filesystem.MoveOptions]::CopyAllowed -bor [Alphaleonis.Win32.Filesystem.MoveOptions]::WriteThrough
 
 				$res = [Alphaleonis.Win32.Filesystem.File]::MoveTransacted($tx, $f, $dest, $opts)
 				assert $res.ErrorCode -eq 0 "failed to move $f to ${dest}: $($res.ErrorMessage)"
@@ -291,17 +289,19 @@ function :cp {
 			trace "copying $f to $dest"
 
 			if($tx) {
-				$opts = if($force) {
-					[Alphaleonis.Win32.Filesystem.CopyOptions]::None
-				} else {
-					[Alphaleonis.Win32.Filesystem.CopyOptions]::FailIfExists
+				$opts = [Alphaleonis.Win32.Filesystem.CopyOptions]::AllowDecryptedDestination
+				if(!$force) {
+					$opts += [Alphaleonis.Win32.Filesystem.CopyOptions]::FailIfExists
 				}
 				if(-not $p.IsDirectory) {
 					$opts += [Alphaleonis.Win32.Filesystem.CopyOptions]::OpenSourceForWrite
 				}
-				$opts += [Alphaleonis.Win32.Filesystem.CopyOptions]::AllowDecryptedDestination
 
-				$res = [Alphaleonis.Win32.Filesystem.File]::CopyTransacted($tx, $f, $dest, $opts)
+				$res = if($p.IsDirectory) {
+					[Alphaleonis.Win32.Filesystem.Directory]::CopyTransacted($tx, $f, $dest, $opts, $force)
+				} else {
+					[Alphaleonis.Win32.Filesystem.File]::CopyTransacted($tx, $f, $dest, $opts)
+				}
 				assert $res.ErrorCode -eq 0 "failed to copy $f to ${dest}: $($res.ErrorMessage)"
 			} else {
 				try {
