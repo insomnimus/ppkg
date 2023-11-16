@@ -117,7 +117,7 @@ class Package: PackageInfo {
 	}
 
 	[void] Validate() {
-		$checks = "description", "version", "bin", "license", "homepage"
+		$checks = "description", "version", "bin", "license"
 		foreach($key in $checks) {
 			$val = $this | select-object -ea ignore -expand $key
 			assert $val "the manifest at path $($this.path) is missing the property $key"
