@@ -35,9 +35,10 @@ public class Action {
 			"copy" => parser.ParseArguments<Copy>(args).MapResult(ok, err),
 			"create" => parser.ParseArguments<Create>(args).MapResult(ok, err),
 			"link" => parser.ParseArguments<Link>(args).MapResult(ok, err),
+			"mkdir" => parser.ParseArguments<Mkdir>(args).MapResult(ok, err),
 			"move" => parser.ParseArguments<Move>(args).MapResult(ok, err),
 			"remove" => parser.ParseArguments<Remove>(args).MapResult(ok, err),
-			_ => throw new UnknownActionError(name, args),
+			_ => throw new UnknownActionError(name),
 		};
 	}
 }

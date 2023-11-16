@@ -18,12 +18,10 @@ public class Unreachable: Exception {
 
 public class UnknownActionError: Exception {
 	public string Name { get; init; }
-	public string[] Args { get; init; }
 
-	internal UnknownActionError(string name, string[] args)
+	internal UnknownActionError(string name)
 	: base($"unknown action `{name}`") {
 		this.Name = name;
-		this.Args = args;
 	}
 }
 
