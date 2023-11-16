@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<LangVersion>10.0</LangVersion>
+		<AssemblyName>Action</AssemblyName>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<NoWarn>8618,8601</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" Version="2.9.1" />
+		<PackageReference Include="DotNet.Glob" Version="3.1.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AlphaFS\src\AlphaFS\AlphaFS.csproj" />
+	</ItemGroup>
+</Project>

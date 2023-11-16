@@ -1,0 +1,2 @@
+# Exclude vendored AlphaFS from github language stats
+/AlphaFS/** linguist-vendored
