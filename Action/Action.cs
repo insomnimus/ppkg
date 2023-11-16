@@ -15,8 +15,7 @@ public class Action {
 
 	public void Run(Context ctx) => this.Cmd.Run(ctx);
 
-	public static Action? NewAction(string name, string[] args, out IEnumerable<Error>? errors) {
-		IEnumerable<Error>? errs = null;
+	public Action(string name, string[] args) {
 		var settings = new ParserSettings() {
 			AutoHelp = false,
 			AutoVersion = false,
@@ -27,23 +26,18 @@ public class Action {
 		};
 		var parser = new Parser(s => s = settings);
 
-		Func<IEnumerable<Error>, Command?> err = (e) => {
-			errs = e;
-			return null;
+		Func<IEnumerable<Error>, Command> err = (e) => {
+			throw new ActionParseError(name, args, e.First());
 		};
-		Func<Command?, Command?> ok = x => x;
+		Func<Command, Command> ok = x => x;
 
-		var c = name switch {
+		this.Cmd = name switch {
 			"copy" => parser.ParseArguments<Copy>(args).MapResult(ok, err),
 			"create" => parser.ParseArguments<Create>(args).MapResult(ok, err),
 			"link" => parser.ParseArguments<Link>(args).MapResult(ok, err),
 			"move" => parser.ParseArguments<Move>(args).MapResult(ok, err),
 			"remove" => parser.ParseArguments<Remove>(args).MapResult(ok, err),
-			_ => throw new Exception("not handled"),
+			_ => throw new UnknownActionError(name, args),
 		};
-
-		errors = errs;
-		if (c != null) return new Action(c!);
-		else return null;
 	}
 }

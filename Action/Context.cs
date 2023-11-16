@@ -25,14 +25,14 @@ public class Context {
 	internal string resolve(string p) {
 		var path = Path.RemoveTrailingDirectorySeparator(Path.Combine(this.dir, p));
 		if (!this.isInDir(path)) {
-			throw new Errors.PathLeavesDir(this.dir, p);
+			throw new PathLeavesDirError(this.dir, p);
 		}
 		return path;
 	}
 
 	internal void assertInDir(string path) {
 		if (!this.isInDir(path)) {
-			throw new Errors.PathLeavesDir(this.dir, path);
+			throw new PathLeavesDirError(this.dir, path);
 		}
 	}
 
