@@ -21,6 +21,7 @@ public class Action {
 			AutoHelp = false,
 			AutoVersion = false,
 			CaseSensitive = true,
+			CaseInsensitiveEnumValues = true,
 			EnableDashDash = true,
 			IgnoreUnknownArguments = false,
 		};
