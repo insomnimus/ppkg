@@ -105,6 +105,8 @@ class Package: PackageInfo {
 	hidden [string] $path
 	[Resource] $x64
 	[Resource] $x32
+	[PPKG.Action[]] $preInstall
+	[PPKG.Action[]] $postInstall
 
 	static [Package] ParseFile([string] $path, [string] $repo) {
 		$j = get-content -lp $path | convertfrom-json -asHashTable -depth 5

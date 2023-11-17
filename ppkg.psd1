@@ -7,7 +7,7 @@
 	Description = "A transactional package manager"
 	PowerShellVersion = "7.2.0"
 
-	RequiredAssemblies = @("libdll/AlphaFS.dll", "libdll/PPKG.Action.dll")
+	RequiredAssemblies = @("libdll/AlphaFS.dll", "libdll/PPKG.dll")
 	FormatsToProcess = @()
 
 	NestedModules = @(
