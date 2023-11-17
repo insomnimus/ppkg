@@ -233,7 +233,7 @@ function :mv {
 				$dest = $destIsDir ? (join-path $destination $f.name) : $destination
 				trace "moving $f to $dest"
 
-	$opts = [Alphaleonis.Win32.Filesystem.MoveOptions]::CopyAllowed -bor [Alphaleonis.Win32.Filesystem.MoveOptions]::WriteThrough
+				$opts = [Alphaleonis.Win32.Filesystem.MoveOptions]::CopyAllowed -bor [Alphaleonis.Win32.Filesystem.MoveOptions]::WriteThrough
 				if($force -and -not $f.IsDirectory) {
 					$opts += [Alphaleonis.Win32.Filesystem.MoveOptions]::ReplaceExisting
 				}

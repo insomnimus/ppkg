@@ -89,6 +89,20 @@ function :ppkg-install {
 
 				trace "moving downloaded files to $target"
 				script::mv -lp $files $target -tx $tx
+				if($pkg.preInstall) {
+					info "executing pre-install actions"
+					$ctx = [PPKG.Context]::new($tx, $target, $function:trace)
+					foreach($a in $pkg.preInstall) {
+						trace "executing action: $a"
+						try {
+							$a.run($ctx)
+						} catch {
+							err "error executing pre-build action: $_`nfailed action: $a"
+						}
+					}
+					$ctx = $null
+				}
+
 				$installInfo = $pkg.CreateInstallInfo($arch)
 				trace "creating install record"
 				$data = $installInfo.Json()
@@ -113,7 +127,6 @@ function :ppkg-install {
 		}
 
 		$bins | script::shim::write -tx $tx
-
 
 		# Link persistent files and folders
 		if($pkg.persist) {
@@ -148,6 +161,7 @@ function :ppkg-install {
 					script::mv $path $real -tx $tx
 				}
 
+				$real = script::get-file $real -tx $tx
 				if($real.IsDirectory) {
 					script::ln -junction -path $path -pointsTo $real -tx $tx
 				} else {
