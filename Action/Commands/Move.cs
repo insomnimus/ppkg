@@ -15,8 +15,11 @@ public class Move: Command {
 	public IEnumerable<string> Files { get; set; }
 
 	public void Run(Context c) {
-		var files = this.Files.ToArray();
-		if (this.NullGlob && files.Length < 2) return;
+		var files = this.Files.SelectMany(x => c.glob(x, this.NullGlob)).ToArray();
+		if (this.NullGlob && files.Length < 2) {
+			c.Trace("globbing matched no path; moving nothing");
+			return;
+		}
 		var target = c.resolve(files[files.Length - 1]);
 		var sources = files.Take(files.Length - 1).SelectMany(x => c.glob(x, this.NullGlob));
 		var targetIsDir = Directory.ExistsTransacted(c.Tx, target);
@@ -35,6 +38,7 @@ public class Move: Command {
 			: target;
 
 			c.assertInDir(p);
+			c.Trace($"moving {p} to {dest}");
 
 			var opts = MoveOptions.CopyAllowed | MoveOptions.WriteThrough;
 			if (this.Force && !Directory.ExistsTransacted(c.Tx, p)) {

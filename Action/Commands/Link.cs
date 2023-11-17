@@ -46,12 +46,14 @@ public class Link: Command {
 
 		if (File.ExistsTransacted(c.Tx, p)) {
 			if (this.Force) {
+				c.Trace($"deleting file {p}");
 				File.DeleteTransacted(c.Tx, p, true);
 			} else {
 				throw new IOException($"cannot create link: file {this.Path} already exists and --force was not provided", 80);
 			}
 		} else if (Directory.ExistsTransacted(c.Tx, p)) {
 			if (this.Force) {
+				c.Trace($"deleting directory {p}");
 				Directory.DeleteTransacted(c.Tx, p, true);
 			} else {
 				throw new IOException($"cannot create link: file {this.Path} already exists and --force was not provided", 80);
@@ -59,8 +61,10 @@ public class Link: Command {
 		}
 
 		if (this.Hard) {
+			c.Trace($"creating hard link {p} -> {target}");
 			File.CreateHardLinkTransacted(c.Tx, p, target);
 		} else if (this.Junction) {
+			c.Trace($"creating directory junction {p} -> {target}");
 			Directory.CreateJunction(c.Tx, p, target, true);
 		} else {
 			throw new Unreachable();

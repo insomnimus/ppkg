@@ -13,6 +13,7 @@ public class Mkdir: Command {
 		var files = c.resolve(this.Path);
 
 		foreach (var p in files) {
+			c.Trace($"creating directory {p}");
 			Directory.CreateDirectoryTransacted(c.Tx, p);
 		}
 	}

@@ -28,12 +28,15 @@ public class Create: Command {
 
 		foreach (var p in files) {
 			if (File.ExistsTransacted(c.Tx, p)) {
-				if (this.IfMissing) continue;
-				else if (!this.Force) {
+				if (this.IfMissing) {
+					c.Trace($"file {p} exists, skipping (--if-missing)");
+					continue;
+				} else if (!this.Force) {
 					throw new IOException($"the file `{p}` already exists and neither --force nor --if-missing was specified", 80);
 				}
 			}
 
+			c.Trace($"writing file {p}");
 			File.WriteAllBytesTransacted(c.Tx, p, data);
 		}
 	}

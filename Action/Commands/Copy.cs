@@ -17,7 +17,11 @@ public class Copy: Command {
 
 	public void Run(Context c) {
 		var files = this.Files.ToArray();
-		if (this.NullGlob && files.Length < 2) return;
+		if (this.NullGlob && files.Length < 2) {
+			c.Trace("glob matched no file, not copying anything");
+			return;
+		}
+
 		var target = c.resolve(files[files.Length - 1]);
 		var sources = files.Take(files.Length - 1).SelectMany(x => c.glob(x, this.NullGlob));
 		var targetIsDir = Directory.ExistsTransacted(c.Tx, target);
@@ -34,6 +38,8 @@ public class Copy: Command {
 				Path.GetFileName(p)
 			)
 			: target;
+
+			c.Trace($"copying {p} to {dest}");
 
 			c.assertInDir(p);
 

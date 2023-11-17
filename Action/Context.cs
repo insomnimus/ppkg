@@ -5,18 +5,20 @@ using DotNet.Globbing;
 using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 
-
 public class Context {
 	private static GlobOptions GlobOpts = new GlobOptions() {
 		Evaluation = new EvaluationOptions() { CaseInsensitive = true }
 	};
 
-	internal string[] dirComponents;
 	internal string dir { get; set; }
 	public KernelTransaction Tx { get; set; }
+	public System.Action<string> Trace { get; set; }
 
-	public Context(KernelTransaction tx, string dir) {
+	internal string[] dirComponents;
+
+	public Context(KernelTransaction tx, string dir, System.Action<string> trace) {
 		this.Tx = tx;
+		this.Trace = trace;
 
 		if (!SPath.IsPathRooted(dir)) {
 			throw new ArgumentException($"the path specified is relative: {dir}", "dir");
@@ -57,10 +59,12 @@ public class Context {
 	}
 
 	internal string[] glob(string pattern, bool nullGlob) {
+		this.Trace($"called glob (nullglob = {nullGlob}): {pattern}");
 		if (pattern.StartsWith("./") || pattern.StartsWith(".\\")) {
 			pattern = pattern.Substring(2);
 		}
 		if (!pattern.Contains('*', '?', '[')) {
+			this.Trace("pattern does not contain wildcards, not globbing");
 			return new string[] { this.resolve(pattern) };
 		}
 
@@ -76,6 +80,7 @@ public class Context {
 
 		var root = (lastSlash < 0) ? this.dir : SPath.Combine(this.dir, pattern.Substring(0, lastSlash));
 		if (!Directory.ExistsTransacted(this.Tx, root)) {
+			this.Trace($"globbed path {root}/{pattern} does not exist, not globbing");
 			return nullGlob ? new string[] { }
 			: new string[] { this.resolve(pattern) };
 		}
@@ -96,6 +101,7 @@ public class Context {
 			}
 		};
 
+		this.Trace($"globbing directory {root} with depth {depth} and pattern {g}");
 		var items = Directory.EnumerateFileSystemEntriesTransacted(
 			this.Tx,
 			root,
@@ -103,6 +109,8 @@ public class Context {
 			filter
 		)
 		.ToArray();
+
+		this.Trace($"globbing matched {items.Length} path(sd)");
 
 		if (!nullGlob && items.Length == 0) return new string[] { this.resolve(pattern) };
 		else return items;
