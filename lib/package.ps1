@@ -135,6 +135,14 @@ class Package: PackageInfo {
 			assert $res -ceq "" "the manifest at $($this.path) has an invalid value for 'x64.url': $res"
 		}
 
+		# Validate binary names
+		$names = [Collections.Generic.HashSet[string]]::new()
+		foreach($b in $this.BinNames()) {
+			if(!$names.add($b.ToUpper())) {
+				throw "package declares multiple binaries with the same name: $b"
+			}
+		}
+
 		# Validate persist values
 		if($this.persist.length -gt 0) {
 			$names = @{}
@@ -236,6 +244,38 @@ class Persist {
 			return "{0}:{1}" -f $this.name, $this.rename
 		} else {
 			return $this.name
+		}
+	}
+}
+
+class PackageDisplay {
+	[string] $name
+	[string] $repo
+	[PVersion] $version
+	[string] $description
+	[string] $homepage
+	[string] $license
+	[string] $bin
+	[object] $installed
+
+	PackageDisplay([PackageInfo] $p) {
+		$this.name = $p.name
+		$this.repo = $p.repo
+		$this.version = $p.version
+		$this.description = $p.description
+		$this.license = $p.license
+		$this.homepage = $p.homepage
+		$this.bin = $p.BinNames()
+
+		$path = $p.InstalledManifestPath()
+		$query = [WildcardPattern]::escape($p.name)
+		if($info = script::ppkg-list -ea ignore $query -repo $p.repo) {
+			$this.installed = $info.version
+			if($info.archOverride) {
+				$this | add-member NoteProperty archOverride $info.archOverride
+			}
+		} else {
+			$this.installed = $false
 		}
 	}
 }
