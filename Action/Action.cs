@@ -25,13 +25,13 @@ public class Action {
 		var name = words[0];
 		var args = words[1..];
 
-		var parser = new Parser(s => s = new ParserSettings() {
-			AutoHelp = false,
-			AutoVersion = false,
-			CaseSensitive = true,
-			CaseInsensitiveEnumValues = true,
-			EnableDashDash = true,
-			IgnoreUnknownArguments = false,
+		var parser = new Parser(s => {
+			s.AutoHelp = false;
+			s.AutoVersion = false;
+			s.CaseSensitive = true;
+			s.CaseInsensitiveEnumValues = true;
+			s.EnableDashDash = true;
+			s.IgnoreUnknownArguments = false;
 		});
 
 		Func<IEnumerable<Error>, Command> err = (e) => {
