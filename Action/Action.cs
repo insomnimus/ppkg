@@ -9,22 +9,30 @@ public interface Command {
 }
 
 public class Action {
-	public Command Cmd { get; set; }
-
-	public Action(Command cmd) => this.Cmd = cmd;
+	public string CommandString { get; init; }
+	public Command Cmd { get; init; }
 
 	public void Run(Context ctx) => this.Cmd.Run(ctx);
+	public override string ToString() => this.CommandString;
+	public static Action Parse(string command) => new Action(command);
 
-	public Action(string name, string[] args) {
-		var settings = new ParserSettings() {
+	public Action(string command) {
+		var words = ShellWords.Parse(command);
+		if (words.Length == 0) {
+			throw new ArgumentException("the input string is empty or only contains whitespace", "command");
+		}
+
+		var name = words[0];
+		var args = words[1..];
+
+		var parser = new Parser(s => s = new ParserSettings() {
 			AutoHelp = false,
 			AutoVersion = false,
 			CaseSensitive = true,
 			CaseInsensitiveEnumValues = true,
 			EnableDashDash = true,
 			IgnoreUnknownArguments = false,
-		};
-		var parser = new Parser(s => s = settings);
+		});
 
 		Func<IEnumerable<Error>, Command> err = (e) => {
 			throw new ActionArgError(name, args, e.First());
@@ -40,13 +48,7 @@ public class Action {
 			"remove" => parser.ParseArguments<Remove>(args).MapResult(ok, err),
 			_ => throw new UnknownActionError(name),
 		};
-	}
 
-	public static Action Parse(string command) {
-		var words = ShellWords.Parse(command);
-		if (words.Length == 0) {
-			throw new ArgumentException("the input string is empty or only contains whitespace", "command");
-		}
-		return new Action(words[0], words[1..]);
+		this.CommandString = command;
 	}
 }
