@@ -7,6 +7,10 @@ using System.Linq;
 
 
 public class Context {
+	private static GlobOptions GlobOpts = new GlobOptions() {
+		Evaluation = new EvaluationOptions() { CaseInsensitive = true }
+	};
+
 	internal string[] dirComponents;
 	internal string dir { get; set; }
 	public KernelTransaction Tx { get; set; }
@@ -52,11 +56,7 @@ public class Context {
 		return true;
 	}
 
-	internal string[] glob(string pattern) {
-		var globOpts = new GlobOptions() {
-			Evaluation = new EvaluationOptions() { CaseInsensitive = true }
-		};
-
+	internal string[] glob(string pattern, bool nullGlob) {
 		if (pattern.StartsWith("./") || pattern.StartsWith(".\\")) {
 			pattern = pattern.Substring(2);
 		}
@@ -76,13 +76,14 @@ public class Context {
 
 		var root = (lastSlash < 0) ? this.dir : SPath.Combine(this.dir, pattern.Substring(0, lastSlash));
 		if (!Directory.ExistsTransacted(this.Tx, root)) {
-			return new string[] { this.resolve(pattern) };
+			return nullGlob ? new string[] { }
+			: new string[] { this.resolve(pattern) };
 		}
 
 		var depth = pattern.Contains("**") ? 0
 		: (this.dirComponents.Length + pattern.Count(c => c == '\\' || c == '/'));
 
-		var g = Glob.Parse(pattern.Substring(lastSlash + 1), globOpts);
+		var g = Glob.Parse(pattern.Substring(lastSlash + 1), GlobOpts);
 
 		var filter = new DirectoryEnumerationFilters() {
 			InclusionFilter = (entry) => {
@@ -103,7 +104,7 @@ public class Context {
 		)
 		.ToArray();
 
-		if (items.Length == 0) return new string[] { this.resolve(pattern) };
+		if (!nullGlob && items.Length == 0) return new string[] { this.resolve(pattern) };
 		else return items;
 	}
 }

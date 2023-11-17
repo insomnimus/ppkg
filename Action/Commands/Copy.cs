@@ -9,14 +9,17 @@ public class Copy: Command {
 
 	[Option('f', "force")]
 	public bool Force { get; set; }
+	[Option('n', "null-glob")]
+	public bool NullGlob { get; set; }
 
 	[Value(0, Min = 2)]
 	public IEnumerable<string> Files { get; set; }
 
 	public void Run(Context c) {
 		var files = this.Files.ToArray();
+		if (this.NullGlob && files.Length < 2) return;
 		var target = c.resolve(files[files.Length - 1]);
-		var sources = files.Take(files.Length - 1).SelectMany(x => c.glob(x));
+		var sources = files.Take(files.Length - 1).SelectMany(x => c.glob(x, this.NullGlob));
 		var targetIsDir = Directory.ExistsTransacted(c.Tx, target);
 
 		var i = 0;
