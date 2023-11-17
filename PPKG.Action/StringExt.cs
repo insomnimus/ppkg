@@ -1,4 +1,4 @@
-namespace Action;
+namespace PPKG.Action;
 
 internal static class StringExt {
 	public static bool Contains(this string self, params char[] any) {

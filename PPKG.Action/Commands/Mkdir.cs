@@ -1,4 +1,4 @@
-namespace Action;
+namespace PPKG.Action;
 
 using Alphaleonis.Win32.Filesystem;
 using CommandLine;

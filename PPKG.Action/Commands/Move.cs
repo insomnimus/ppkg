@@ -1,11 +1,10 @@
-namespace Action;
+namespace PPKG.Action;
 
-using System.Linq;
-using CommandLine;
 using Alphaleonis.Win32.Filesystem;
+using CommandLine;
 
-public class Copy: Command {
-	public string Name => "copy";
+public class Move: Command {
+	public string Name => "move";
 
 	[Option('f', "force")]
 	public bool Force { get; set; }
@@ -25,7 +24,7 @@ public class Copy: Command {
 		var i = 0;
 		foreach (var p in sources) {
 			if (i > 0 && !targetIsDir) {
-				throw new Exception($"tried to copy multiple items into one path ({target})");
+				throw new Exception($"tried to move multiple items into one path ({target})");
 			}
 			i++;
 
@@ -37,17 +36,14 @@ public class Copy: Command {
 
 			c.assertInDir(p);
 
-			var opts = CopyOptions.AllowDecryptedDestination;
-			if (!this.Force) {
-				opts |= CopyOptions.FailIfExists;
+			var opts = MoveOptions.CopyAllowed | MoveOptions.WriteThrough;
+			if (this.Force && !Directory.ExistsTransacted(c.Tx, p)) {
+				opts |= MoveOptions.ReplaceExisting;
 			}
 
-			var res = Directory.ExistsTransacted(c.Tx, p)
-			? Directory.CopyTransacted(c.Tx, p, dest, opts, this.Force)
-			: File.CopyTransacted(c.Tx, p, dest, opts | CopyOptions.OpenSourceForWrite);
-
+			var res = File.MoveTransacted(c.Tx, p, dest, opts);
 			if (res.ErrorCode != 0) {
-				throw new IOException($"error copying {p} to {dest}: {res.ErrorMessage}");
+				throw new IOException($"error moving {p} to {dest}: {res.ErrorMessage}");
 			}
 		}
 	}

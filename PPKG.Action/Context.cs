@@ -1,4 +1,4 @@
-namespace Action;
+namespace PPKG.Action;
 
 using SPath = System.IO.Path;
 using DotNet.Globbing;

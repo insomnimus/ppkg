@@ -136,7 +136,7 @@ function :rm {
 				if($f.isDirectory) {
 					[Alphaleonis.Win32.Filesystem.Directory]::DeleteTransacted($tx, $f.fullname, $recurse)
 				} else {
-					[Alphaleonis.Win32.Filesystem.File]::DeleteTransacted($tx, $f.fullname, $true) # TODO: Set last parameter (delete read-only) to $force?
+					[Alphaleonis.Win32.Filesystem.File]::DeleteTransacted($tx, $f.fullname, $true)
 				}
 			} else {
 				try {

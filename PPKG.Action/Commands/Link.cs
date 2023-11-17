@@ -1,4 +1,4 @@
-namespace Action;
+namespace PPKG.Action;
 
 using Alphaleonis.Win32.Filesystem;
 using CommandLine;
@@ -23,7 +23,7 @@ public class Link: Command {
 	[Value(2)]
 	public string? __stop {
 		get => null;
-		set { throw new ActionParseError(this.Name, new string[] { }, $"unexpected argument `{value!}`"); }
+		set { throw new ActionArgError(this.Name, new string[] { }, $"unexpected argument `{value!}`"); }
 	}
 
 	public void Run(Context c) {

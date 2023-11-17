@@ -1,48 +1,11 @@
-// MIT License Copyright (c) 2023 Taylan Gökkaya <insomnimus@proton.me>
-
 // This is a mostly 1:1 port of https://github.com/tmiasko/shell-words.
 // I've changed the escape character to be ` as Powershell uses it.
 // I've also implemented more Powershell-like escape handling.
 
-namespace ShellWords;
+namespace PPKG.Action;
 
-using System;
 using System.Collections.Generic;
 using System.Text;
-
-public class ParseError: FormatException {
-	internal long pos;
-	internal string input;
-
-	public override string Message => this.message();
-
-	internal ParseError(string input, long pos) {
-		this.pos = pos;
-		this.input = input;
-	}
-
-	private string message() {
-		var line = 1;
-		var start = 0;
-
-		for (var i = 0; i < this.pos; i++) {
-			if (this.input[i] == '\n') {
-				start = i;
-				line++;
-			}
-		}
-
-		var s = this.input.Substring(start);
-		var len = s.IndexOf('\n');
-		s = (len < 0) ? s : s.Substring(0, len);
-
-		var col = (start == 0)
-		? 1
-		: (1 + this.pos % start);
-
-		return $"{line}:{col}: unterminated quote\nline: {s}";
-	}
-}
 
 enum State {
 	/// Within a delimiter.
@@ -66,7 +29,7 @@ enum State {
 public static class ShellWords {
 	const char ESCAPE = '`';
 
-	internal static char EscapedChar(char c) => c switch {
+	private static char EscapedChar(char c) => c switch {
 		'0' => '\0',
 		'a' => '\a',
 		'b' => '\b',
@@ -194,12 +157,12 @@ public static class ShellWords {
 		}
 	}
 
-	public static ParseError? TryParse(string input, out string[] outWords) {
+	public static ActionParseError? TryParse(string input, out string[] outWords) {
 		var words = new List<string>();
 		var res = ShellWords.split(input, words);
 		if (res >= 0) {
 			outWords = new string[] { };
-			return new ParseError(input, res);
+			return new ActionParseError(input, res);
 		}
 
 		outWords = words.ToArray();

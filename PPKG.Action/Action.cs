@@ -1,4 +1,4 @@
-namespace Action;
+namespace PPKG.Action;
 
 using System;
 using CommandLine;
@@ -27,7 +27,7 @@ public class Action {
 		var parser = new Parser(s => s = settings);
 
 		Func<IEnumerable<Error>, Command> err = (e) => {
-			throw new ActionParseError(name, args, e.First());
+			throw new ActionArgError(name, args, e.First());
 		};
 		Func<Command, Command> ok = x => x;
 
@@ -40,5 +40,13 @@ public class Action {
 			"remove" => parser.ParseArguments<Remove>(args).MapResult(ok, err),
 			_ => throw new UnknownActionError(name),
 		};
+	}
+
+	public static Action Parse(string command) {
+		var words = ShellWords.Parse(command);
+		if (words.Length == 0) {
+			throw new ArgumentException("the input string is empty or only contains whitespace", "command");
+		}
+		return new Action(words[0], words[1..]);
 	}
 }

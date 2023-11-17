@@ -1,4 +1,4 @@
-namespace Action;
+namespace PPKG.Action;
 
 public class PathLeavesDirError: Exception {
 	public string Dir { get; init; }
@@ -25,22 +25,56 @@ public class UnknownActionError: Exception {
 	}
 }
 
-public class ActionParseError: Exception {
+public class ActionArgError: Exception {
 	public string Name { get; init; }
 	public string[] Args { get; init; }
 	public string Error { get; init; }
 
-	internal ActionParseError(string name, string[] args, CommandLine.Error error)
+	internal ActionArgError(string name, string[] args, CommandLine.Error error)
 	: base($"failed to parse command {name}: {error}") {
 		this.Name = name;
 		this.Args = args;
 		this.Error = error.ToString();
 	}
 
-	internal ActionParseError(string name, string[] args, string error)
+	internal ActionArgError(string name, string[] args, string error)
 : base($"failed to parse command {name}: {error}") {
 		this.Name = name;
 		this.Args = args;
 		this.Error = error;
+	}
+}
+
+public class ActionParseError: FormatException {
+	internal long pos;
+	internal string input;
+
+	public override string Message => this.message();
+
+	internal ActionParseError(string input, long pos) {
+		this.pos = pos;
+		this.input = input;
+	}
+
+	private string message() {
+		var line = 1;
+		var start = 0;
+
+		for (var i = 0; i < this.pos; i++) {
+			if (this.input[i] == '\n') {
+				start = i;
+				line++;
+			}
+		}
+
+		var s = this.input.Substring(start);
+		var len = s.IndexOf('\n');
+		s = (len < 0) ? s : s.Substring(0, len);
+
+		var col = (start == 0)
+		? 1
+		: (1 + this.pos % start);
+
+		return $"{line}:{col}: unterminated quote\nline: {s}";
 	}
 }
