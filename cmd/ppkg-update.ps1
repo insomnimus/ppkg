@@ -5,7 +5,10 @@ function ppkg-update {
 		[string[]] $package,
 
 		[Parameter(HelpMessage = "Update a specific repository")]
-		[string[]] $repo
+		[string[]] $repo,
+
+		[Parameter(HelpMessage = "Do not remove the download log file on success")]
+		[switch] $keepLogs
 	)
 
 	try {
@@ -22,7 +25,10 @@ function :ppkg-update {
 		[string[]] $package,
 
 		[Parameter(HelpMessage = "Update a specific repository")]
-		[string[]] $repo
+		[string[]] $repo,
+
+		[Parameter(HelpMessage = "Do not remove the download log file on success")]
+		[switch] $keepLogs
 	)
 
 	$ErrorActionPreference = "stop"
@@ -122,7 +128,7 @@ function :ppkg-update {
 
 			$res = script::resolve-arch $new -override:$old.archOverride
 			$file = ""
-			script::download $new $res -out ([ref] $file)
+			script::download $new $res -out ([ref] $file) -keepLogs:$keepLogs
 			$files = script::extract $file -selectFiles:$res.files
 
 			$target = $new.InstallDir()

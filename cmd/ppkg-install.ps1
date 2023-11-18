@@ -7,7 +7,10 @@ function ppkg-install {
 		[string] $repo,
 
 		[Parameter(HelpMessage = "The architecture to install for")]
-		[Arch] $arch
+		[Arch] $arch,
+
+		[Parameter(HelpMessage = "Do not remove the download log file on success")]
+		[switch] $keepLogs
 	)
 
 	try {
@@ -26,7 +29,10 @@ function :ppkg-install {
 		[string] $repo,
 
 		[Parameter(HelpMessage = "The architecture to install for")]
-		[Arch] $arch
+		[Arch] $arch,
+
+		[Parameter(HelpMessage = "Do not remove the download log file on success")]
+		[switch] $keepLogs
 	)
 
 	$ErrorActionPreference = "stop"
@@ -80,7 +86,7 @@ function :ppkg-install {
 		} else {
 			$res = script::resolve-arch $pkg -override:$arch
 			$file = ""
-			script::download $pkg $res -outResult ([ref] $file)
+			script::download $pkg $res -outResult ([ref] $file) -keepLogs:$keepLogs
 			$files = script::extract $file -selectFiles:$res.files
 			try {
 				$scope, $tx = script::new-tx

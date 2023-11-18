@@ -10,7 +10,9 @@ function :download {
 		[Resource] $res,
 
 		[Parameter(Mandatory)]
-		[ref] $outResult
+		[ref] $outResult,
+
+		[switch] $keepLogs
 	)
 
 	$dir = join-path $script:settings.tmp $pkg.repo ("{0}@{1}" -f $pkg.name, $pkg.version)
@@ -104,6 +106,10 @@ function :download {
 		}
 		"" { err "URL missing protocol: $url" }
 		default { err "unsupported protocol in url: $($res.url)" }
+	}
+
+	if(!$keepLogs) {
+		remove-item -ea ignore -recurse -lp $logdir
 	}
 }
 
