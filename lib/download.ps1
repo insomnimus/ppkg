@@ -55,11 +55,10 @@ function :download {
 
 			script::check-hash $res -path $file
 
-			if($rename -and $file.name -ne $rename) {
+			if($name -and $file.name -ne $name) {
 				$old = $file
 				$file = join-path $dir $name
-				# Rename the file
-				script::mv -lp $old $file
+				script::mv $old $file
 			}
 
 			$outResult.value = $file
@@ -121,6 +120,9 @@ function :extract {
 
 	$name = $origName = split-path -leafbase $path
 	$ext = split-path -extension $path
+	if($ext -in ".exe", ".cmd", ".bat") {
+		return $path
+	}
 	$isTar = $false
 	if($ext -in ".xz", ".gz", ".zst", ".bz2", ".lz", ".z" -and $name -like "*.tar") {
 		$name = split-path -leafbase $name
