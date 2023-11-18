@@ -9,7 +9,13 @@ function :shim::write {
 	)
 
 	begin {
+		$ErrorActionPreference = "stop"
 		$cmdc = $script:settings.exec("cmdc.exe")
+		$arch = switch (Get-CimInstance win32_operatingsystem | select-object -expand OsArchitecture) {
+			"64-bit" { "x64"; break }
+			"32-bit" { "x32"; break }
+			default { err "ppkg does not support $_ architectures" }
+		}
 	}
 
 	process {

@@ -37,7 +37,7 @@ public static string[] CommandLineToArgs(string commandLine) {
 }
 '@
 
-		$StrToArgv = Add-Type -MemberDefinition $snippet -Name "StrToArgv" -Namespace PPKG.WinapiFunctions -PassThru
+		# $StrToArgv = Add-Type -MemberDefinition $snippet -Name "StrToArgv" -Namespace PPKG.WinapiFunctions -PassThru
 	}
 
 	process {
@@ -50,9 +50,11 @@ public static string[] CommandLineToArgs(string commandLine) {
 				$out = cmdc -i $p 2>&1
 				if($LastExitCode -ne 0) {
 					write-error "${s}: not a known shim"
+				} elseif($out -match '^"(?<path>[^"]+)"') {
+					# $path, $_argv = $StrToArgv::CommandLineToArgs($out)
+					$matches.path
 				} else {
-					$path, $_argv = $StrToArgv::CommandLineToArgs($out)
-					$path
+					$out
 				}
 			} else {
 				write-error "${s}: not found"

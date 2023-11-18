@@ -88,7 +88,7 @@ function :ppkg-install {
 				script::empty-dir $target -tx $tx
 
 				trace "moving downloaded files to $target"
-				script::mv -lp $files $target -tx $tx
+				script::mv $files $target -tx $tx
 				if($pkg.preInstall) {
 					info "executing pre-install actions"
 					$ctx = [PPKG.Context]::new($tx, $target, $function:trace)

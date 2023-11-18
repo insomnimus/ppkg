@@ -179,7 +179,7 @@ function :check-hash {
 
 	if($resource.hash) {
 		$algo, $expected = $resource.GetHash()
-		info "checking the $algo hash of $(split-path -leaf path)"
+		info "checking the $algo hash of $(split-path -leaf $path)"
 		$hash = Get-FileHash -ea stop -algo $algo -path $path
 		assert $expected -eq $hash.hash "file hashes don't match: $path"
 	}

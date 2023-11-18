@@ -63,6 +63,7 @@ public class Context {
 		if (pattern.StartsWith("./") || pattern.StartsWith(".\\")) {
 			pattern = pattern.Substring(2);
 		}
+
 		if (!pattern.Contains('*', '?', '[')) {
 			this.Trace("pattern does not contain wildcards, not globbing");
 			return new string[] { this.resolve(pattern) };
@@ -92,12 +93,12 @@ public class Context {
 
 		var filter = new DirectoryEnumerationFilters() {
 			InclusionFilter = (entry) => {
-				var s = entry.FullPath.Substring(this.dir.Length + 1);
+				var s = entry.FullPath.Substring(root.Length + 1);
 				return g.IsMatch(s);
 			},
 			RecursionFilter = (entry) => {
 				return entry.IsDirectory &&
-				(depth == 0 || depth >= entry.FullPath.Count(c => c == '\\' || c == '/'));
+				(depth == 0 || depth > entry.FullPath.Count(c => c == '\\' || c == '/'));
 			}
 		};
 
@@ -110,7 +111,7 @@ public class Context {
 		)
 		.ToArray();
 
-		this.Trace($"globbing matched {items.Length} path(sd)");
+		this.Trace($"globbing matched {items.Length} {((items.Length == 1) ? "path" : "paths")}");
 
 		if (!nullGlob && items.Length == 0) return new string[] { this.resolve(pattern) };
 		else return items;
