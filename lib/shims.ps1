@@ -23,7 +23,7 @@ function :shim::write {
 		$dest = join-path $script:settings.bin $name
 		if($tx) {
 			# Powershell translates pipeline data into unicode strings so we have to do it manually here.
-			$data = script::exec -ea stop $cmdc "-o-" "--arch=x64" "--" $path
+			$data = script::exec $cmdc "-o-" --arch $arch "--" $path
 			# [Alphaleonis.Win32.Filesystem.File]::WriteAllBytesTransacted($tx, $dest, $data)
 			script::write-file -path $dest -data $data -tx $tx
 		} else {
