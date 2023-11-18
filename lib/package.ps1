@@ -7,6 +7,7 @@ class Resource {
 	[Uri] $url
 	[string[]] $files
 	[string] $hash
+	[PPKG.Action[]] $preInstall
 
 	# Constructors
 	Resource() {}

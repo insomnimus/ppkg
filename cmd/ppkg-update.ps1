@@ -134,19 +134,7 @@ function :ppkg-update {
 			trace "moving downloaded files to $target"
 			script::mv -lp $files $target -tx $tx
 
-			if($new.preInstall) {
-				info "executing pre-install actions"
-				$ctx = [PPKG.Context]::new($tx, $target, $function:trace)
-				foreach($a in $new.preInstall) {
-					trace "executing action: $a"
-					try {
-						$a.run($ctx)
-					} catch {
-						err "error executing pre-build action: $_`nfailed action: $a"
-					}
-				}
-				$ctx = $null
-			}
+			script::run-actions $new $res -dir:$target -tx:$tx
 
 			info "linking $new/latest"
 			$latest = join-path (split-path $target) "latest"

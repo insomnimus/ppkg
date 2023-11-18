@@ -89,19 +89,8 @@ function :ppkg-install {
 
 				trace "moving downloaded files to $target"
 				script::mv $files $target -tx $tx
-				if($pkg.preInstall) {
-					info "executing pre-install actions"
-					$ctx = [PPKG.Context]::new($tx, $target, $function:trace)
-					foreach($a in $pkg.preInstall) {
-						trace "executing action: $a"
-						try {
-							$a.run($ctx)
-						} catch {
-							err "error executing pre-build action: $_`nfailed action: $a"
-						}
-					}
-					$ctx = $null
-				}
+
+				script::run-actions $pkg $res -dir:$target -tx:$tx
 
 				$installInfo = $pkg.CreateInstallInfo($arch)
 				trace "creating install record"

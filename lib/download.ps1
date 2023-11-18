@@ -186,3 +186,43 @@ function :check-hash {
 		assert $expected -eq $hash.hash "file hashes don't match: $path"
 	}
 }
+
+function :run-actions {
+	[CmdletBinding()]
+	param (
+		[Parameter(Mandatory, Position = 0)]
+		[Package] $pkg,
+		[Parameter(Mandatory, Position = 1)]
+		[Resource] $resource,
+		[Parameter(Mandatory)]
+		[string] $dir,
+		[Parameter(Mandatory)]
+		[Alphaleonis.Win32.Filesystem.KernelTransaction] $tx
+	)
+
+	$actions = [Collections.Generic.List[PPKG.Action]]::new()
+
+	if($resource.preInstall) {
+		[void] $actions.AddRange($resource.preInstall)
+	}
+	if($pkg.preInstall) {
+		[void] $actions.AddRange($pkg.preInstall)
+	}
+
+	if($actions.count -eq 0) {
+		return
+	}
+
+	info "executing pre-install actions"
+	$ctx = [PPKG.Context]::new($tx, $dir, $function:trace)
+	foreach($a in $actions) {
+		trace "executing action: $a"
+		try {
+			$a.run($ctx)
+		} catch {
+			err -ea stop "error executing action: $_`naction: $a"
+		}
+	}
+
+	$ctx = $null
+}
