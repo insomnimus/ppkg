@@ -2,7 +2,10 @@ function ppkg-update {
 	[CmdletBinding()]
 	param (
 		[Parameter(Position = 0, ValueFromRemainingArguments, HelpMessage = "Name of the packages to update (accepts glob)")]
-		[string[]] $package
+		[string[]] $package,
+
+		[Parameter(HelpMessage = "Update a specific repository")]
+		[string[]] $repo
 	)
 
 	try {
@@ -16,18 +19,26 @@ function :ppkg-update {
 	[CmdletBinding()]
 	param (
 		[Parameter(Position = 0, ValueFromRemainingArguments, HelpMessage = "Name of the packages to update (accepts glob)")]
-		[string[]] $package
+		[string[]] $package,
+
+		[Parameter(HelpMessage = "Update a specific repository")]
+		[string[]] $repo
 	)
 
 	$ErrorActionPreference = "stop"
+	$package = $package | script::escape-invalidpattern
 	$hasStar = $package -ccontains "*"
 
 	# Update repositories
 	$repos = $script:settings.GetRepos($repo)
-	if($repos.count -eq 0) {
-		write-warning "no repository is registered"
+	if($repos.count -eq 0 -and $repos.count -eq 0) {
+		warn "no repository is registered"
+		return
+	} elseif($repos.count -eq 0) {
+		warn "no installed repository matched $($repo -join " | ")"
 		return
 	}
+
 	foreach($r in $repos) {
 		info "updating repository $r"
 		try {

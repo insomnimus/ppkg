@@ -33,7 +33,7 @@ function :ppkg-install {
 	$query = $package | foreach-object { [WildcardPattern]::escape($_) }
 
 	info "searching package repositories"
-	$packages = script::ppkg-search -repo:$repo -wa ignore $query
+	$packages = script::ppkg-search -repo:$repo -wa ignore -package $query
 	assert $packages.count -ne 0 "No packages found matching $package"
 
 	$packages = $packages | foreach-object {

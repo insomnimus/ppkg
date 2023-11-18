@@ -14,7 +14,7 @@ function :ppkg-remove {
 	)
 
 	$ErrorActionPreference = "stop"
-	$query = $glob ? $package : ($package | foreach-object { [WildcardPattern]::escape($_) })
+	$query = $glob ? (script::escape-invalidpattern $package) : ($package | foreach-object { [WildcardPattern]::escape($_) })
 	$packages = script::ppkg-list $query
 
 	assert $packages.count -ne 0 "No installed package matched the given query"

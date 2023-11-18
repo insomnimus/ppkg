@@ -9,7 +9,7 @@ function ppkg-info {
 
 	$ErrorActionPreference = "stop"
 	$query = [WildcardPattern]::escape($package)
-	$packages = script::ppkg-search $query -repo:$repo
+	$packages = script::ppkg-search -package $query -repo:$repo
 
 	if($packages.count -eq 0) {
 		if($repo) {

@@ -31,3 +31,23 @@ function :plural {
 		"$n ${str}s"
 	}
 }
+
+function :escape-invalidpattern {
+	[CmdletBinding()]
+	[OutputType([string])]
+	param (
+		[Parameter(Position = 0, ValueFromPipeline)]
+		[string[]] $pattern
+	)
+
+	process {
+		foreach($p in $pattern) {
+			try {
+				$null = [WildcardPattern]::new($p)
+				$p
+			} catch {
+				[WildcardPattern]::escape($p)
+			}
+		}
+	}
+}
