@@ -9,7 +9,11 @@ function err {
 	)
 
 	# TODO: Write to a log aggregator if configured
-	write-error ($msg -f $argv)
+	if($argv) {
+		write-error ($msg -f $argv)
+	} else {
+		write-error $msg
+	}
 }
 
 function info {
@@ -23,7 +27,11 @@ function info {
 	)
 
 	# TODO: Write to a log aggregator if configured
-	write-information -infa continue ($msg -f $argv)
+	if($argv) {
+		write-information -infa continue ($msg -f $argv)
+	} else {
+		write-information -infa continue $msg
+	}
 }
 
 function trace {
@@ -37,7 +45,11 @@ function trace {
 	)
 
 	# TODO: Write to a log aggregator if configured
-	write-verbose ($msg -f $argv)
+	if($argv) {
+		write-verbose ($msg -f $argv)
+	} else {
+		write-verbose $msg
+	}
 }
 
 function warn {
@@ -51,5 +63,9 @@ function warn {
 	)
 
 	# TODO: Write to a log aggregator if configured
-	write-warning ($msg -f $argv)
+	if($argv) {
+		write-warning ($msg -f $argv)
+	} else {
+		write-warning $msg
+	}
 }
