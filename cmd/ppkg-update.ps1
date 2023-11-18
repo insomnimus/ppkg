@@ -123,12 +123,67 @@ function :ppkg-update {
 			trace "moving downloaded files to $target"
 			script::mv -lp $files $target -tx $tx
 
+			if($new.preInstall) {
+				info "executing pre-install actions"
+				$ctx = [PPKG.Context]::new($tx, $target, $function:trace)
+				foreach($a in $new.preInstall) {
+					trace "executing action: $a"
+					try {
+						$a.run($ctx)
+					} catch {
+						err "error executing pre-build action: $_`nfailed action: $a"
+					}
+				}
+				$ctx = $null
+			}
+
 			info "linking $new/latest"
 			$latest = join-path (split-path $target) "latest"
 			if(script::exists $latest -tx $tx) {
 				script::rm -lp $latest -tx $tx
 			}
 			script::ln -junction -path $latest -pointsTo $target -tx $tx
+
+			if($new.persist) {
+				info "linking persistent files and folders"
+				$persistDir = $new.GetPersistDir()
+				script::ensure-dir $persistDir -tx $tx
+				foreach($p in $new.persist) {
+					info "persisting {0}" $p.rename
+					$path = join-path $target $p.rename
+					$real = join-path $persistDir $p.name
+					$realExists = script::exists $real -tx $tx
+					try {
+						$path = script::get-file $path -tx $tx
+					} catch {
+						err "the package $pkg defines a file to be persisted but the file `"$path`" can't be statted: $_"
+					}
+
+					if($realExists) {
+						# We have to prefer the user config over the one shipped in the package
+						# If it's a directory, copy missing items
+						if($path.IsDirectory -and (script::exists -directory $real -tx $tx)) {
+							foreach($p in script::ls $path -recurse -tx $tx) {
+								$moveto = join-path $real $p.fullname.substring($path.fullname.length + 1)
+								if(script::exists -not $moveto -tx $tx) {
+									split-path -parent $moveto | script::ensure-dir -tx $tx
+									script::mv $_ $moveto -tx $tx
+								}
+							}
+						}
+						script::rm -rf $path -tx $tx
+					} else {
+						script::mv $path $real -tx $tx
+					}
+
+					$real = script::get-file $real -tx $tx
+					if($real.IsDirectory) {
+						script::ln -junction -path $path -pointsTo $real -tx $tx
+					} else {
+						script::ln -hard -path $path -pointsTo $real -tx $tx
+					}
+				}
+			}
 
 			# Install shims
 			$bins = $new.bin | foreach-object {
