@@ -99,14 +99,3 @@ class GitRepo: Repo {
 		return "$($this.name) (git)"
 	}
 }
-
-
-function :aria2-logfile {
-	[CmdletBinding()]
-	[OutputType([string])]
-	param (
-		[Parameter(Mandatory, Position = 0)]
-		[Package] $pkg
-	)
-	join-path $script:settings.logs $pkg.name "$($pkg.version).aria2-logs"
-}
