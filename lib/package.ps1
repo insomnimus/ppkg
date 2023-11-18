@@ -160,7 +160,7 @@ class Package: PackageInfo {
 	}
 
 	[InstallInfo] CreateInstallInfo([Nullable[Arch]] $arch) {
-		$x = $this | select-object -property name, version, repo, description, homepage, license, bin
+		$x = $this | select-object -property name, version, repo, description, homepage, license, bin, persist
 		$x = [InstallInfo] $x
 		$x.archOverride = $arch
 		return $x
@@ -181,8 +181,9 @@ class InstallInfo: PackageInfo {
 	}
 
 	[string] Json() {
-		$x = $this | select-object -exclude version, name, repo, path
-		$x | add-member NoteProperty version $this.version.ToString() -typeName string
+		$x = $this | select-object -exclude version, name, repo, path, persist
+		$x | add-member NoteProperty version $this.version.ToString() -typename string
+		$x | add-member NoteProperty persist ($this.persist | foreach-object ToString) -typename string[]
 		return (ConvertTo-Json -depth 5 -input $x -enumsAsStrings)
 	}
 }
