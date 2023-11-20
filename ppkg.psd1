@@ -22,7 +22,7 @@
 		"lib/shims.ps1"
 		"lib/ui-utility.ps1"
 		# Commands
-		"cmd/ppkg-clean.ps1", "cmd/ppkg-info.ps1", "cmd/ppkg-install.ps1", "cmd/ppkg-list.ps1", "cmd/ppkg-remove.ps1", "cmd/ppkg-search.ps1", "cmd/ppkg-update.ps1", "cmd/ppkg-where.ps1"
+		"cmd/ppkg-clean.ps1", "cmd/ppkg-info.ps1", "cmd/ppkg-install.ps1", "cmd/ppkg-list.ps1", "cmd/ppkg-remove.ps1", "cmd/ppkg-search.ps1", "cmd/ppkg-update.ps1", "cmd/ppkg-where.ps1", "cmd/update-manifest.ps1"
 	)
 
 	FunctionsToExport = '[a-z]*'

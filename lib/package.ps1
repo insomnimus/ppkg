@@ -5,6 +5,7 @@ enum Arch {
 
 class Resource {
 	[Uri] $url
+	[Uri] $githubPattern
 	[string[]] $files
 	[string] $hash
 	[PPKG.Action[]] $preInstall
@@ -47,6 +48,29 @@ class Resource {
 		}
 
 		return "", ""
+	}
+
+	[object] ToJsonObject() {
+		if(!$this.hash -and !$this.files -and !$this.preInstall -and !$this.githubPattern) {
+			return $this.url
+		}
+		$x = [Ordered] @{
+			url = $this.url
+		}
+		if($this.githubPattern) {
+			$x.githubPattern = $this.githubPattern
+		}
+		if($this.hash) {
+			$x.hash = $this.hash
+		}
+		if($this.files) {
+			$x.files = $this.files
+		}
+		if($this.preInstall) {
+			$x.preInstall = $this.preInstall | foreach-object ToString
+		}
+
+		return $x
 	}
 }
 
@@ -107,7 +131,6 @@ class Package: PackageInfo {
 	[Resource] $x64
 	[Resource] $x32
 	[PPKG.Action[]] $preInstall
-	# [PPKG.Action[]] $postInstall
 
 	static [Package] ParseFile([string] $path, [string] $repo) {
 		$j = get-content -lp $path | convertfrom-json -asHashTable -depth 5
@@ -166,6 +189,27 @@ class Package: PackageInfo {
 		$x.archOverride = $arch
 		return $x
 	}
+
+	[string] Json() {
+		$x = $this | select-object -exclude name, path, repo, preInstall, x32, x64, persist
+		$x.bin = $this.bin | write-output # This  makes single arrays into strings
+		$x.version = $this.version.ToString()
+		if($this.x32) {
+			$x | add-member NoteProperty x32 $this.x32.ToJsonObject()
+		}
+		if($this.x64) {
+			$x | add-member NoteProperty x64 $this.x64.ToJsonObject()
+		}
+
+		if($this.preInstall) {
+			$x | add-member NoteProperty preInstall ($this.preInstall | foreach-object ToString) -memberType "string[]"
+		}
+		if($this.persist) {
+			$x | add-member NoteProperty persist (this.persist | foreach-object ToString) -typeName "string[]"
+		}
+
+		return (ConvertTo-Json -depth 10 $x)
+	}
 }
 
 class InstallInfo: PackageInfo {
@@ -182,9 +226,9 @@ class InstallInfo: PackageInfo {
 	}
 
 	[string] Json() {
-		$x = $this | select-object -exclude version, name, repo, path, persist
-		$x | add-member NoteProperty version $this.version.ToString() -typename string
-		$x | add-member NoteProperty persist ($this.persist | foreach-object ToString) -typename string[]
+		$x = $this | select-object -exclude name, repo, path, persist
+		$x.version = $this.version.ToString()
+		$x | add-member NoteProperty persist ($this.persist | foreach-object ToString) -typename "string[]"
 		return (ConvertTo-Json -depth 5 -input $x -enumsAsStrings)
 	}
 }
