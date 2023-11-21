@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+	<ViewDefinitions>
+		<View>
+			<Name>PPKG.Package</Name>
+			<ViewSelectedBy>
+				<TypeName>Package</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Name</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Version</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Repo</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Installed</Label>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>name</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>version</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>repo</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>$_.IsInstalled($false) ? "yes" : "no"</ScriptBlock>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+	</ViewDefinitions>
+</Configuration>

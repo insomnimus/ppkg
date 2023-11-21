@@ -7,7 +7,11 @@ function ppkg-clean {
 		[string[]] $repo,
 
 		[Parameter(HelpMessage = "Do not leave the latest version in the cache")]
-		[switch] $full
+		[switch] $full,
+		[Parameter(HelpMessage = "Do not remove temporary files")]
+		[switch] $keepTemporary,
+		[Parameter(HelpMessage = "Remove log files")]
+		[switch] $logs
 	)
 
 	try {
@@ -26,7 +30,11 @@ function :ppkg-clean {
 		[string[]] $repo,
 
 		[Parameter(HelpMessage = "Do not leave the latest version in the cache")]
-		[switch] $full
+		[switch] $full,
+		[Parameter(HelpMessage = "Do not remove temporary files")]
+		[switch] $keepTemporary,
+		[Parameter(HelpMessage = "Remove log files")]
+		[switch] $logs
 	)
 
 	$ErrorActionPreference = "stop"
@@ -39,7 +47,7 @@ function :ppkg-clean {
 	}
 
 	$found = [Ordered] @{}
-
+	info "searching packages"
 	$repos = Get-ChildItem -directory -lp $script:settings.apps `
 	| where-object { !$repo -or $_.name -in $repo } `
 	| foreach-object {
@@ -110,7 +118,7 @@ function :ppkg-clean {
 		}
 	}
 
-	if($toRemove.count -eq 0) {
+	if($toRemove.count -eq 0 -and -not $logs -and $noTemporary) {
 		info "nothing to clean up"
 		return
 	}
@@ -119,10 +127,21 @@ function :ppkg-clean {
 	$scope, $tx = script::new-tx
 	foreach($p in $toRemove) {
 		if($p.name) {
-			info "removing: $($p.name) (outdated)"
+			info "removing {0} (outdated)" $p.name
 		}
 		$freed += script::size -ea ignore $p.path
 		script::rm -rf $p.path -tx $tx
+	}
+
+	if($logs) {
+		info "cleaning logs"
+		$freed += script::size $script:settings.logs
+		script::empty-dir $script:settings.logs -tx $tx
+	}
+	if(!$noTemporary) {
+		info "cleaning temporary files"
+		$freed += script::size $script:settings.tmp
+		script::empty-dir $script:settings.tmp -tx $tx
 	}
 
 	info "commiting transaction"

@@ -8,7 +8,7 @@
 	PowerShellVersion = "7.2.0"
 
 	RequiredAssemblies = @("libdll/AlphaFS.dll", "libdll/PPKG.dll")
-	FormatsToProcess = @()
+	FormatsToProcess = @("format/InstallInfo.format.ps1xml", "format/Package.format.ps1xml")
 
 	NestedModules = @(
 		# Lib

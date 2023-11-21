@@ -8,12 +8,12 @@ function err {
 		[object[]] $argv
 	)
 
-	# TODO: Write to a log aggregator if configured
 	if($argv) {
-		write-error ($msg -f $argv)
-	} else {
-		write-error $msg
+		$msg = $msg -f $argv
 	}
+
+	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "error"; message = $msg }
+	Write-Error $msg
 }
 
 function info {
@@ -26,12 +26,12 @@ function info {
 		[object[]] $argv
 	)
 
-	# TODO: Write to a log aggregator if configured
 	if($argv) {
-		write-information -infa continue ($msg -f $argv)
-	} else {
-		write-information -infa continue $msg
+		$msg = $msg -f $argv
 	}
+
+	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "info"; message = $msg }
+	write-information -infa continue $msg
 }
 
 function trace {
@@ -44,12 +44,12 @@ function trace {
 		[object[]] $argv
 	)
 
-	# TODO: Write to a log aggregator if configured
 	if($argv) {
-		write-verbose ($msg -f $argv)
-	} else {
-		write-verbose $msg
+		$msg = $msg -f $argv
 	}
+
+	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "trace"; message = $msg }
+	write-verbose $msg
 }
 
 function warn {
@@ -62,10 +62,10 @@ function warn {
 		[object[]] $argv
 	)
 
-	# TODO: Write to a log aggregator if configured
 	if($argv) {
-		write-warning ($msg -f $argv)
-	} else {
-		write-warning $msg
+		$msg = $msg -f $argv
 	}
+
+	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "warning"; message = $msg }
+	write-warning $msg
 }
