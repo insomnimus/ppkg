@@ -36,6 +36,7 @@ function :ppkg-update {
 	$hasStar = $package -ccontains "*"
 
 	# Update repositories
+	$anyUpdated = $false
 	$repos = $script:settings.GetRepos($repo)
 	if($repos.count -eq 0 -and $repos.count -eq 0) {
 		warn "no repository is registered"
@@ -48,8 +49,10 @@ function :ppkg-update {
 	foreach($r in $repos) {
 		info "updating repository $r"
 		try {
-			if($r.update()) {
-				info "successfully updated $r"
+			if($r -isnot [GitRepo]) {
+				info "`tnot a git repository"
+			} elseif($r.update()) {
+				$anyUpdated = $true
 			} else {
 				info "`tno changes"
 			}
@@ -98,7 +101,9 @@ function :ppkg-update {
 	}
 
 	if($updates.count -eq 0) {
-		info "nothing to do"
+		if(!$anyUpdated) {
+			info "nothing to do"
+		}
 		return
 	}
 	info "updating $(script::plural $updates.count package)"

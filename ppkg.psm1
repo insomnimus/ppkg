@@ -84,7 +84,7 @@ class GitRepo: Repo {
 		$path = $this.LocalPath()
 		git -C $path clean -qfxd
 		assert-ok "git clean exited with $lastExitCode"
-		git -C reset --hard HEAD -q
+		git -C $path reset --hard HEAD -q
 		assert-ok "git reset exited with $lastExitCode"
 
 		$oldHash = git -C $path rev-parse HEAD
