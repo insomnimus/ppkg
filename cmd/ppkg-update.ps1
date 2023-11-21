@@ -106,10 +106,12 @@ function :ppkg-update {
 		}
 		return
 	}
+
 	info "updating $(script::plural $updates.count package)"
 
 	foreach($x in $updates) {
 		$name = $x.old.name
+		info "updating {0} ({1} -> {2})" $name $x.old.version $x.new.version
 
 		try {
 			$oldBins = $x.old.BinNames()
