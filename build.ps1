@@ -3,14 +3,14 @@ $cmdcHash = "C011F477FFF03A608AE33AFC51BFCC3A0F936233DC848C7D4AEC334B3618DDF0"
 function build {
 	$ErrorActionPreference = "stop"
 	new-item -type directory -force libdll, libexec | out-null
-	remove-item libdll/*, Action/bin -recurse -force -ea ignore
+	remove-item libdll/*, PPKG/bin -recurse -force -ea ignore
 
 	"building the C# components"
-	dotnet publish -c release Action/PPKG.csproj
+	dotnet publish -c release PPKG/PPKG.csproj
 	if($lastExitCode -ne 0) {
 		throw "failed to build the C# components of the project"
 	}
-	get-childitem Action/bin/release/netstandard2.1/publish | move-item -dest libdll
+	get-childitem PPKG/bin/release/netstandard2.1/publish | move-item -dest libdll
 
 	if(test-path libexec/cmdc.exe) {
 		$hash = Get-FileHash -algorithm sha256 libexec/cmdc.exe
