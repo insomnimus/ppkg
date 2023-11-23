@@ -1,4 +1,4 @@
-$cmdcHash = "57A2FF4F855DE104B0EB332000475BBE1913A33CFC32616F2646724196748646"
+$cmdcHash = "C011F477FFF03A608AE33AFC51BFCC3A0F936233DC848C7D4AEC334B3618DDF0"
 
 function build {
 	$ErrorActionPreference = "stop"
@@ -25,13 +25,13 @@ function build {
 		$temp = New-TemporaryFile
 		remove-item -lp $temp
 		$temp = [IO.Path]::ChangeExtension($temp, "7z")
-		Invoke-WebRequest -outFile $temp https://github.com/insomnimus/cmdc/releases/download/v0.3.0/cmdc-win32.7z
+		Invoke-WebRequest -outFile $temp https://github.com/insomnimus/cmdc/releases/download/v0.4.0/cmdc-win32.7z
 		7z x -bso0 -bsp0 $temp -olibexec
 		if($lastExitCode -ne 0) {
 			throw "failed to extract $temp with 7-zip"
 		}
 		$hash = Get-FileHash libexec/cmdc.exe -algorithm sha256
-		if($hash.hash -ne "57A2FF4F855DE104B0EB332000475BBE1913A33CFC32616F2646724196748646") {
+		if($hash.hash -ne $cmdcHash) {
 			throw "the hash of cmdc.exe does not match the expected hash; run again at a later time or file a bug report if the issue persists"
 		}
 		remove-item -lp $temp
