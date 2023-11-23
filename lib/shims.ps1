@@ -19,15 +19,23 @@ function :shim::write {
 	}
 
 	process {
+		$ext = split-path -extension $path
+		[string[]] $cmd = if($ext -eq ".ps1") {
+			"pwsh.exe", "-nologo", "-noprofile", "-file", $path
+		} elseif($ext -eq ".exe" -or $ext -eq ".com") {
+			$path
+		} else {
+			"cmd.exe", "/c", $path
+		}
+
 		$name = (split-path -leafbase $path) + ".exe"
 		$dest = join-path $script:settings.bin $name
 		if($tx) {
 			# Powershell translates pipeline data into unicode strings so we have to do it manually here.
-			$data = script::exec $cmdc "-o-" --arch $arch "--" $path
-			# [Alphaleonis.Win32.Filesystem.File]::WriteAllBytesTransacted($tx, $dest, $data)
+			$data = script::exec $cmdc "-o-" --arch $arch "--" @cmd
 			script::write-file -path $dest -data $data -tx $tx
 		} else {
-			$null = &$cmdc --arch x64 -o $dest -- $path
+			$null = &$cmdc --arch x64 -o $dest -- @cmd
 			assert $LastExitCode -eq 0 "failed to create shim $dest -> $path"
 		}
 	}
