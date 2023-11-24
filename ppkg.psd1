@@ -25,7 +25,13 @@
 		"cmd/ppkg-clean.ps1", "cmd/ppkg-info.ps1", "cmd/ppkg-install.ps1", "cmd/ppkg-list.ps1", "cmd/ppkg-remove.ps1", "cmd/ppkg-search.ps1", "cmd/ppkg-update.ps1", "cmd/ppkg-where.ps1", "cmd/update-manifest.ps1"
 	)
 
-	FunctionsToExport = '[a-z]*'
+	FunctionsToExport = @(
+		"ppkg-clean", "ppkg-info"
+"ppkg-install", "ppkg-list"
+"ppkg-remove", "ppkg-search"
+"ppkg-update", "ppkg-where"
+"Update-PPKGManifest"
+	)
 	CmdletsToExport = @()
 	VariablesToExport = @()
 	AliasesToExport = @()

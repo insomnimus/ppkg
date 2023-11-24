@@ -38,7 +38,7 @@ function :ppkg-update {
 	# Update repositories
 	$anyUpdated = $false
 	$repos = $script:settings.GetRepos($repo)
-	if($repos.count -eq 0 -and $repos.count -eq 0) {
+	if($repos.count -eq 0 -and $repo.count -eq 0) {
 		warn "no repository is registered"
 		return
 	} elseif($repos.count -eq 0) {
