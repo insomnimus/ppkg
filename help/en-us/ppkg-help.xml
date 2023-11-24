@@ -1,0 +1,1464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-add-repo</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>add-repo</command:noun>
+      <maml:description>
+        <maml:para>Adds a repository.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-add-repo` cmdlet installs a repository through git.</maml:para>
+      <maml:para>The repository url must point to a git repository.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-add-repo</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>name</maml:name>
+          <maml:description>
+            <maml:para>The name that will be used locally to refer to the repository</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>git</maml:name>
+          <maml:description>
+            <maml:para>The git clone URL of the repository</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>git</maml:name>
+        <maml:description>
+          <maml:para>The git clone URL of the repository</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>name</maml:name>
+        <maml:description>
+          <maml:para>The name that will be used locally to refer to the repository</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--------------- Example 1: Add a new repository ---------------</maml:title>
+        <dev:code>PS&gt; ppkg-add-repo personal https://github.com/myname/ppkg-packages</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-clean</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>clean</command:noun>
+      <maml:description>
+        <maml:para>Cleans up unneeded packages and files.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-clean` cmdlet cleans up files that are not in use. This is a safe operation; no installed app is removed.</maml:para>
+      <maml:para>PPKG does not remove older versions of the apps from the filesystem upon update or remove (unless the -full flag is used with `ppkg-remove`). These caches are reused upon reinstallation.</maml:para>
+      <maml:para>This command by default: - Removes all but the currently installed version and the latest other cached version of an app;</maml:para>
+      <maml:para>- Removes all but the latest version of an app that was previously uninstalled without the `-full` flag;</maml:para>
+      <maml:para>- Removes the temporary files and folders.</maml:para>
+      <maml:para></maml:para>
+      <maml:para>If the `-full` flag is specified: - Removes all but the currently installed version of apps;</maml:para>
+      <maml:para>- Removes all cached versions of previously uninstalled apps;</maml:para>
+      <maml:para>- Removes the temporary files and folders.</maml:para>
+      <maml:para></maml:para>
+      <maml:para>You can keep the temporary files using the `-noTemporary` flag.</maml:para>
+      <maml:para>The logs are not removed. To remove the logs as weell, specify the `-logs` flag.</maml:para>
+      <maml:para>Like with other ppkg cmdlets that modify the filesystem, `ppkg-clean` uses filesystem transactions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-clean</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>package</maml:name>
+          <maml:description>
+            <maml:para>Packages to clean (accepts glob)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>full</maml:name>
+          <maml:description>
+            <maml:para>Do not leave the latest version in the cache</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>keepTemporary</maml:name>
+          <maml:description>
+            <maml:para>Do not remove temporary files</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>logs</maml:name>
+          <maml:description>
+            <maml:para>Remove log files</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>Clean packages in the provided repositories only</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>full</maml:name>
+        <maml:description>
+          <maml:para>Do not leave the latest version in the cache</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>keepTemporary</maml:name>
+        <maml:description>
+          <maml:para>Do not remove temporary files</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>logs</maml:name>
+        <maml:description>
+          <maml:para>Remove log files</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>package</maml:name>
+        <maml:description>
+          <maml:para>Packages to clean (accepts glob)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>repo</maml:name>
+        <maml:description>
+          <maml:para>Clean packages in the provided repositories only</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------- Example 1: Do a cache-friendly system cleanup --------</maml:title>
+        <dev:code>PS&gt; ppkg-clean</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-info</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>info</command:noun>
+      <maml:description>
+        <maml:para>Displays information about an app.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-info` cmdlet displays information about a package.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-info</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>package</maml:name>
+          <maml:description>
+            <maml:para>Name of the package</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>The repository the package should be searched in</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>package</maml:name>
+        <maml:description>
+          <maml:para>Name of the package</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>repo</maml:name>
+        <maml:description>
+          <maml:para>The repository the package should be searched in</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------- Example 1: Display information about a package --------</maml:title>
+        <dev:code>PS&gt; ppkg-info aria2</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-install</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>install</command:noun>
+      <maml:description>
+        <maml:para>Downloads and installs a package.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-install` cmdlet downloads and installs a package on your system.</maml:para>
+      <maml:para>The `package` parameter is the name of a package that must exist in an installed repository.</maml:para>
+      <maml:para>The packages are installed in `$PPKG_ROOT/apps/&lt;repo&gt;/&lt;app&gt;/&lt;version&gt;` and the binaries are made available in `$PPKG_ROOT/bin`. For the binaries to be available for other programs such as Powershell to access without specifying full paths, you must ensure that `$PPKG_ROOT/bin` is in the `$PATH` environment variable.</maml:para>
+      <maml:para>To update packages, see `ppkg-update`. To uninstall packages, see `ppkg-remove`.</maml:para>
+      <maml:para>This cmdlet installs only the version that's currently known in an installed repository. It might be desireable to run `ppkg-update` with no parameters beforehand to update the local repositories.</maml:para>
+      <maml:para>As with other package management cmdlets, `ppkg-install` uses filesystem transactions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-install</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>package</maml:name>
+          <maml:description>
+            <maml:para>Name of the packages to install</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>arch</maml:name>
+          <maml:description>
+            <maml:para>The architecture to install for</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">X32</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">X64</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">Arch</command:parameterValue>
+          <dev:type>
+            <maml:name>Arch</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>keepLogs</maml:name>
+          <maml:description>
+            <maml:para>Do not remove the download log file on success</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>Specify a repository</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>arch</maml:name>
+        <maml:description>
+          <maml:para>The architecture to install for</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Arch</command:parameterValue>
+        <dev:type>
+          <maml:name>Arch</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>keepLogs</maml:name>
+        <maml:description>
+          <maml:para>Do not remove the download log file on success</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>package</maml:name>
+        <maml:description>
+          <maml:para>Name of the packages to install</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>repo</maml:name>
+        <maml:description>
+          <maml:para>Specify a repository</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------ Example 1: Install the ffmpeg package ------------</maml:title>
+        <dev:code>PS&gt; ppkg-install ffmpeg</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>----- Example 2: install multiple packages in one command -----</maml:title>
+        <dev:code>PS&gt; ppkg-install go python</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 3: Install a package from a specific repository ---</maml:title>
+        <dev:code>PS&gt; ppkg-install -repo system-tools ripgrep</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-list</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>list</command:noun>
+      <maml:description>
+        <maml:para>Gets a list of the currently installed packages.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-list` command gets a list of the currently installed packages.</maml:para>
+      <maml:para>The `pattern` parameter accepts wildcards just like the `-like` operator.</maml:para>
+      <maml:para>You can reduce the results to a specified repository by using the `-repo` option.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-list</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>pattern</maml:name>
+          <maml:description>
+            <maml:para>Filter results with a glob pattern</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>Limit results to a repository or repositories</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>pattern</maml:name>
+        <maml:description>
+          <maml:para>Filter results with a glob pattern</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>repo</maml:name>
+        <maml:description>
+          <maml:para>Limit results to a repository or repositories</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------ Example 1: List all installed packages ------------</maml:title>
+        <dev:code>PS&gt; ppkg-install</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: List all installed packages in a specific repository</maml:title>
+        <dev:code>PS&gt; ppkg-install -repo main</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------- Example 3: Get packages that match a pattern ---------</maml:title>
+        <dev:code>PS&gt; ppkg-install ps-*</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-remove</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>remove</command:noun>
+      <maml:description>
+        <maml:para>Uninstalls a previously installed package or packages.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-remove` cmdlet uninstalls packages specified on the command line.</maml:para>
+      <maml:para>You can uninstall packages that match a wildcard pattern by specifying the `-glob` flag.</maml:para>
+      <maml:para>By default `ppkg-remove` does "soft" uninstallation: - The Binary shims are removed from the bin directory;</maml:para>
+      <maml:para>- The installation record is removed;</maml:para>
+      <maml:para>- However, the package contents are kept in cache in case of future reinstallations.</maml:para>
+      <maml:para></maml:para>
+      <maml:para>By specifying the `-full` flag, you can force ppkg to remove the package contents from the caches as well.</maml:para>
+      <maml:para>The persisted files and folders of the removed packages are never removed.</maml:para>
+      <maml:para>If a binary of a removed package is currently running, this command will abort the operation and throw an error. In these cases, the running program must be terminated.</maml:para>
+      <maml:para>As with other package management cmdlets, `ppkg-remove` uses filesystem transactions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-remove</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>package</maml:name>
+          <maml:description>
+            <maml:para>Names of packages to uninstall</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>full</maml:name>
+          <maml:description>
+            <maml:para>Do not leave behind existing files for caching</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>glob</maml:name>
+          <maml:description>
+            <maml:para>Uninstall packages matching the pattern</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>yes</maml:name>
+          <maml:description>
+            <maml:para>Do not prompt for confirmation</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>full</maml:name>
+        <maml:description>
+          <maml:para>Do not leave behind existing files for caching</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>glob</maml:name>
+        <maml:description>
+          <maml:para>Uninstall packages matching the pattern</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>package</maml:name>
+        <maml:description>
+          <maml:para>Names of packages to uninstall</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>yes</maml:name>
+        <maml:description>
+          <maml:para>Do not prompt for confirmation</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>----------------- Example 1: Remove a package -----------------</maml:title>
+        <dev:code>PS&gt; ppkg-remove php</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------- Example 2: Remove multiple packages -------------</maml:title>
+        <dev:code>PS&gt; ppkg-remove python node</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------- Example 3: Remove packages that match a pattern -------</maml:title>
+        <dev:code>PS&gt; ppkg-remove ffmpeg* -glob</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-search</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>search</command:noun>
+      <maml:description>
+        <maml:para>Searches for packages from installed repositories.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-search` cmdlet searches for packages from installed repositories.</maml:para>
+      <maml:para>By default packages are searched by their names and names of their binaries. - To search for binary names only, use the `-bin` option.</maml:para>
+      <maml:para>- To search for package names only, use the `-package` option.</maml:para>
+      <maml:para></maml:para>
+      <maml:para>The options `-query`, `-bin` and `-package` all accept wildcard patterns.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-search</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>bin</maml:name>
+          <maml:description>
+            <maml:para>Name of an executable (accepts glob)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>package</maml:name>
+          <maml:description>
+            <maml:para>Name of the package (accepts glob)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>Specify a repository</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>ppkg-search</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>query</maml:name>
+          <maml:description>
+            <maml:para>The package name or the name of an executable to search for (accepts glob)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>Specify a repository</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>bin</maml:name>
+        <maml:description>
+          <maml:para>Name of an executable (accepts glob)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>package</maml:name>
+        <maml:description>
+          <maml:para>Name of the package (accepts glob)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>query</maml:name>
+        <maml:description>
+          <maml:para>The package name or the name of an executable to search for (accepts glob)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>repo</maml:name>
+        <maml:description>
+          <maml:para>Specify a repository</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--- Example 1: Get packages by name or the name of a binary ---</maml:title>
+        <dev:code>PS&gt; ppkg-search sed</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------- Example 2: Search for a package by only its name -------</maml:title>
+        <dev:code>PS&gt; ppkg-search -package gh</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title> Example 3: Search for packages containing a particular binary </maml:title>
+        <dev:code>PS&gt; ppkg-search -bin wget.exe</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>---- Example 4: Get packages that match a wildcard pattern ----</maml:title>
+        <dev:code>PS&gt; ppkg-search *-dl</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-update</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>update</command:noun>
+      <maml:description>
+        <maml:para>Updates installed packages and repositories.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-update` cmdlet updates installed packages and repositories.</maml:para>
+      <maml:para>If no package name is provided, only the repositories are updated.</maml:para>
+      <maml:para>The repositories are updated regardless of the presence of any package name specified.</maml:para>
+      <maml:para>As with other package management cmdlets, `ppkg-update` uses filesystem transactions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-update</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>package</maml:name>
+          <maml:description>
+            <maml:para>Name of the packages to update (accepts glob)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>keepLogs</maml:name>
+          <maml:description>
+            <maml:para>Do not remove the download log file on success</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>repo</maml:name>
+          <maml:description>
+            <maml:para>Update a specific repository</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>keepLogs</maml:name>
+        <maml:description>
+          <maml:para>Do not remove the download log file on success</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>package</maml:name>
+        <maml:description>
+          <maml:para>Name of the packages to update (accepts glob)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>repo</maml:name>
+        <maml:description>
+          <maml:para>Update a specific repository</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------- Example 1: Update local repositories -------------</maml:title>
+        <dev:code>PS&gt; ppkg-update</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>----------- Example 2: Update all installed packages -----------</maml:title>
+        <dev:code>PS&gt; ppkg-update *</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------- Example 3: Update specific packages -------------</maml:title>
+        <dev:code>PS&gt; ppkg-update go python</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ppkg-where</command:name>
+      <command:verb>ppkg</command:verb>
+      <command:noun>where</command:noun>
+      <maml:description>
+        <maml:para>Gets the full path of an installed binary.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `ppkg-where` cmdlet gets the full path to an installed binary.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ppkg-where</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>shim</maml:name>
+          <maml:description>
+            <maml:para>The name of a shim</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+        <maml:name>shim</maml:name>
+        <maml:description>
+          <maml:para>The name of a shim</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------- Example 1: Get the path of an installed binary --------</maml:title>
+        <dev:code>PS&gt; ppkg-where ripgrep</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Update-PPKGManifest</command:name>
+      <command:verb>Update</command:verb>
+      <command:noun>PPKGManifest</command:noun>
+      <maml:description>
+        <maml:para>Updates a package manifest by consulting github.com.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The `Update-PPKGManifest` cmdlet updates a package manifest to the latest version by consulting github.com.</maml:para>
+      <maml:para>This cmdlet is meant to be used by package repository maintainers. Do not use it on packages controlled by ppkg itself.</maml:para>
+      <maml:para>This cmdlet looks for the `x32.githubPattern` and `x64.githubPattern` fields in a manifest. Manifests without those fields will be ignored.</maml:para>
+      <maml:para>After querying the github API for the latest release, it substitutes the text `${version}` inside the `githubPattern` string with the version returned by calling the github API. The replacement string does not have a `v` prefix. E.g.: `0.5.2`.</maml:para>
+      <maml:para>Note that if the github API returns an older version than currently defined in the package manifest, the package will be downgraded. No updates will be made if the version in the package manifest matches the version on github.</maml:para>
+      <maml:para>By default, the package contents are downloaded to a temporary location to calculate the hash sums and later removed from the disk. To prevent this, specify the `-noHash` flag, in which case the hash value will be omitted from the manifest.</maml:para>
+      <maml:para>Note: Ulike package management cmdlets, `Update-PPKGManifest` does not use filesystem transactions, meaning it can leave the specified manifests in a corrupted state. IT's advised to source control your manifests in case of corruption. However, it will not leave manifests in a corrupt state on regular errors.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Update-PPKGManifest</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>dry</maml:name>
+          <maml:description>
+            <maml:para>Do not update the files on disk</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="lp">
+          <maml:name>literalPath</maml:name>
+          <maml:description>
+            <maml:para>Path to a PPKG manifest</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>noHash</maml:name>
+          <maml:description>
+            <maml:para>Do not download fiels to update hashsums</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Update-PPKGManifest</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>path</maml:name>
+          <maml:description>
+            <maml:para>Path to a PPKG manifest (supports glob)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>dry</maml:name>
+          <maml:description>
+            <maml:para>Do not update the files on disk</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>noHash</maml:name>
+          <maml:description>
+            <maml:para>Do not download fiels to update hashsums</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>dry</maml:name>
+        <maml:description>
+          <maml:para>Do not update the files on disk</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="lp">
+        <maml:name>literalPath</maml:name>
+        <maml:description>
+          <maml:para>Path to a PPKG manifest</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>noHash</maml:name>
+        <maml:description>
+          <maml:para>Do not download fiels to update hashsums</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>path</maml:name>
+        <maml:description>
+          <maml:para>Path to a PPKG manifest (supports glob)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Object[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------- Example 1: Update a package manifest -------------</maml:title>
+        <dev:code>PS&gt; Update-PPKGManifest ./foobar.json</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------- Example 2: Update all manifests in a directory --------</maml:title>
+        <dev:code>PS&gt; Get-ChildItem -Filter *.json -Recurse -File | Update-PPKGManifest</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-- Example 3: Update a manifest without downloading the files --</maml:title>
+        <dev:code>PS&gt; Update-PPKGManifest -noHash ./foobar.json</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+</helpItems>

@@ -37,6 +37,8 @@ You can keep the temporary files using the `-noTemporary` flag.
 
 The logs are not removed. To remove the logs as weell, specify the `-logs` flag.
 
+Like with other ppkg cmdlets that modify the filesystem, `ppkg-clean` uses filesystem transactions.
+
 ## EXAMPLES
 
 ### Example 1: Do a cache-friendly system cleanup

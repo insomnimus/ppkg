@@ -5,31 +5,49 @@ online version:
 schema: 2.0.0
 ---
 
-# ppkg-info
+# ppkg-add-repo
 
 ## SYNOPSIS
-Displays information about an app.
+Adds a repository.
 
 ## SYNTAX
 
 ```
-ppkg-info [-package] <String> [-repo <String>] [<CommonParameters>]
+ppkg-add-repo [-name] <String> [-git] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The `ppkg-info` cmdlet displays information about a package.
+The `ppkg-add-repo` cmdlet installs a repository through git.
+
+The repository url must point to a git repository.
+
 
 ## EXAMPLES
 
-### Example 1: Display information about a package
+### Example 1: Add a new repository
 ```powershell
-PS> ppkg-info aria2
+PS> ppkg-add-repo personal https://github.com/myname/ppkg-packages
 ```
 
 ## PARAMETERS
 
-### -package
-Name of the package
+### -git
+The git clone URL of the repository
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -name
+The name that will be used locally to refer to the repository
 
 ```yaml
 Type: String
@@ -38,21 +56,6 @@ Aliases:
 
 Required: True
 Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -repo
-The repository the package should be searched in
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
