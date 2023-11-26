@@ -12,8 +12,6 @@ public class Link: Command {
 	public bool Hard { get; set; }
 	[Option('j', "junction", SetName = "junction")]
 	public bool Junction { get; set; }
-	[Option('s', "soft", SetName = "soft")]
-	public bool Soft { get; set; }
 
 	[Value(0, Required = true)]
 	public string Path { get; set; }
