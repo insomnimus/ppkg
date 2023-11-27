@@ -11,6 +11,7 @@
 	FormatsToProcess = @("format/InstallInfo.format.ps1xml", "format/Package.format.ps1xml")
 
 	NestedModules = @(
+		"completions.ps1"
 		# Lib
 		"lib/version.ps1"
 		"lib/assert.ps1"
