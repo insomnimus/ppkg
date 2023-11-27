@@ -21,7 +21,7 @@ function ppkg-search {
 	}
 }
 
-function ppkg-search {
+function :ppkg-search {
 	[CmdletBinding(DefaultParameterSetName = "fuzzy")]
 	param (
 		[Parameter(Mandatory, Position = 0, ValueFromRemainingArguments, ParameterSetName = "fuzzy", HelpMessage = "The package name or the name of an executable to search for (accepts glob)")]
