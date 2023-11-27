@@ -60,7 +60,6 @@ function :complete-package {
 	Get-ChildItem -ea ignore -lp $dir -directory `
 	| where-object { !$repo -or $_.name -in $repo } `
 	| foreach-object -parallel {
-		param($name)
 		foreach($f in Get-ChildItem -ea ignore -lp $_ -file -recurse -filter *.json) {
 			$basename = $f.basename
 			if($basename -like $using:buf) {
