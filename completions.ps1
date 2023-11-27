@@ -109,3 +109,15 @@ Register-ArgumentCompleter -CommandName ppkg-list -ParameterName pattern -Script
 	$repo = $params["repo"]
 	script::complete-package $buf -repo:$repo -dir $script:settings.installed
 }
+
+Register-ArgumentCompleter -CommandName ppkg-where -ParameterName shim -ScriptBlock {
+	param($_a, $_b, $buf)
+	$buf = script::normalize-buf $buf
+	if($buf -notlike "*.exe") {
+		$buf += "*"
+	}
+
+	Get-ChildItem -ea ignore -name -file -filter *.exe -lp $script:settings.bin `
+	| where-object { $_ -like $buf } `
+	| script::quote
+}
