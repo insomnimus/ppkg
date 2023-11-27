@@ -33,7 +33,6 @@ function :quote {
 	}
 }
 
-
 function :normalize-buf([string] $buf) {
 	if(!$buf) {
 		return ""
