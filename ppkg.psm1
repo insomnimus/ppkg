@@ -32,10 +32,21 @@ class Settings {
 	}.invoke()
 
 	Settings() {
-		if($env:PPKG_ROOT) {
-			$this.root = $env:PPKG_ROOT
+		$r = if($env:PPKG_ROOT) {
+			$env:PPKG_ROOT
 		} else {
-			$this.root = join-path $env:SYSTEMDRIVE ppkg
+			join-path $env:SYSTEMDRIVE ppkg
+		}
+
+		$this.root = $r
+		$conf = join-path $r ppkg.json
+		if(test-path -type leaf -lp $conf) {
+			try {
+				$j = get-content -raw -lp $conf | ConvertFrom-Json -depth 10
+				$this.sshConfig = $j | foreach-object sshConfig
+			} catch {
+				script:warn "failed to load ppkg configuration from ${conf}: $_"
+			}
 		}
 	}
 
