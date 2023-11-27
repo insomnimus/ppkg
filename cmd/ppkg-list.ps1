@@ -49,6 +49,6 @@ function ppkg-list {
 	try {
 		script::ppkg-list -ea stop @PSBoundParameters
 	} catch {
-		write-error "error: $_"
+		write-error "$_"
 	}
 }

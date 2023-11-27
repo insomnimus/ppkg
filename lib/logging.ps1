@@ -4,6 +4,8 @@ function err {
 		[Parameter(Mandatory, Position = 0)]
 		[string] $msg,
 
+		[switch] $log,
+
 		[Parameter(Position = 1, ValueFromRemainingArguments)]
 		[object[]] $argv
 	)
@@ -12,7 +14,9 @@ function err {
 		$msg = $msg -f $argv
 	}
 
-	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "error"; message = $msg }
+	if($log) {
+		$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "error"; message = $msg }
+	}
 	Write-Error $msg
 }
 
@@ -31,6 +35,23 @@ function info {
 	}
 
 	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "info"; message = $msg }
+	write-information -infa continue $msg
+}
+
+function say {
+	[CmdletBinding()]
+	param (
+		[Parameter(Mandatory, Position = 0)]
+		[string] $msg,
+
+		[Parameter(Position = 1, ValueFromRemainingArguments)]
+		[object[]] $argv
+	)
+
+	if($argv) {
+		$msg = $msg -f $argv
+	}
+
 	write-information -infa continue $msg
 }
 
@@ -58,6 +79,9 @@ function warn {
 		[Parameter(Mandatory, Position = 0)]
 		[string] $msg,
 
+
+		[switch] $noLog,
+
 		[Parameter(Position = 1, ValueFromRemainingArguments)]
 		[object[]] $argv
 	)
@@ -66,6 +90,9 @@ function warn {
 		$msg = $msg -f $argv
 	}
 
-	$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "warning"; message = $msg }
+	if(!$noLog) {
+		$null = New-Event -SourceIdentifier PPKG.Log -MessageData @{ level = "warning"; message = $msg }
+	}
+
 	write-warning $msg
 }

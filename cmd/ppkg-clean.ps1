@@ -17,7 +17,7 @@ function ppkg-clean {
 	try {
 		script::ppkg-clean -ea stop @PSBoundParameters
 	} catch {
-		err "error: $_"
+		err -log "$_"
 	}
 }
 

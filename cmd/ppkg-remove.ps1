@@ -93,6 +93,6 @@ function ppkg-remove {
 	try {
 		script::ppkg-remove -ea stop @PSBoundParameters
 	} catch {
-		write-error "error: $_"
+		err -log "$_"
 	}
 }

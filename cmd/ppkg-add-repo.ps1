@@ -23,7 +23,7 @@ function :ppkg-add-repo {
 	}
 
 	git clone $git $path
-	assert-ok "git clone exited with $LsatExitCode"
+	assert-ok "git clone exited with $LastExitCode"
 	info "added new repository ``$name``"
 }
 
@@ -55,6 +55,6 @@ function ppkg-add-repo {
 	try {
 		script::ppkg-add-repo -ea stop @PSBoundParameters
 	} catch {
-		err "error: $_"
+		err -log "$_"
 	}
 }

@@ -14,7 +14,7 @@ function ppkg-update {
 	try {
 		script::ppkg-update -ea stop @PSBoundParameters
 	} catch {
-		write-error "error: $_"
+		err -log "$_"
 	}
 }
 

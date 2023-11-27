@@ -1,4 +1,4 @@
-function :ppkg-where {
+function ppkg-where {
 	[CmdletBinding()]
 	[OutputType([string])]
 	param (
@@ -32,24 +32,5 @@ function :ppkg-where {
 				write-error "${s}: not found"
 			}
 		}
-	}
-}
-
-function ppkg-where {
-	[CmdletBinding()]
-	[OutputType([string])]
-	param (
-		[Parameter(
-			Mandatory, Position = 0,
-			ValueFromPipeline, ValueFromRemainingArguments,
-			HelpMessage = "The name of a shim"
-		)]
-		[string[]] $shim
-	)
-
-	try {
-		script::ppkg-where -ea stop @PSBoundParameters
-	} catch {
-		write-error "error: $_"
 	}
 }

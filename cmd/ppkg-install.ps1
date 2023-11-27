@@ -16,7 +16,7 @@ function ppkg-install {
 	try {
 		script::ppkg-install -ea stop @PSBoundParameters
 	} catch {
-		write-error "error: $_"
+		err -log "$_"
 	}
 }
 
