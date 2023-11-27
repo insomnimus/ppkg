@@ -49,6 +49,8 @@ function :complete-package {
 	param (
 		[Parameter(Position = 0)]
 		[string] $buf,
+		[Parameter(Mandatory)]
+		[string] $dir,
 		[Parameter()]
 		[string[]] $repo
 	)
@@ -56,7 +58,7 @@ function :complete-package {
 	$buf = script::normalize-buf $buf
 	$buf += "*"
 
-	Get-ChildItem -ea ignore -lp $script:settings.repos -directory `
+	Get-ChildItem -ea ignore -lp $dir -directory `
 	| where-object { !$repo -or $_.name -in $repo } `
 	| foreach-object -parallel {
 		param($name)
@@ -84,11 +86,26 @@ function :complete-package {
 	}
 }
 
-# package parameters
+# package completions
 "info", "install", "search" | foreach-object {
 	Register-ArgumentCompleter -CommandName "ppkg-$_" -ParameterName package -ScriptBlock {
 		param($_a, $_b, $buf, $_d, $params)
 		$repo = $params["repo"]
-		script::complete-package $buf -repo:$repo
+		script::complete-package $buf -repo:$repo -dir $script:settings.repos
 	}
+}
+
+# installed package completions
+"clean", "remove", "update" | foreach-object {
+	Register-ArgumentCompleter -CommandName "ppkg-$_" -ParameterName package -ScriptBlock {
+		param($_a, $_b, $buf, $_d, $params)
+		$repo = $params["repo"]
+		script::complete-package $buf -repo:$repo -dir $script:settings.installed
+	}
+}
+
+Register-ArgumentCompleter -CommandName ppkg-list -ParameterName pattern -ScriptBlock {
+	param($_a, $_b, $buf, $_d, $params)
+	$repo = $params["repo"]
+	script::complete-package $buf -repo:$repo -dir $script:settings.installed
 }
