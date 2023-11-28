@@ -44,7 +44,7 @@ function :normalize-buf([string] $buf) {
 	}
 }
 
-function :complete-package {
+function :completions::search-package {
 	param (
 		[Parameter(Position = 0)]
 		[string] $buf,
@@ -66,13 +66,26 @@ function :complete-package {
 				$basename
 			}
 		}
-	} `
+	}
+}
+
+function :complete-package {
+	param (
+		[Parameter(Position = 0)]
+		[string] $buf,
+		[Parameter(Mandatory)]
+		[string] $dir,
+		[Parameter()]
+		[string[]] $repo
+	)
+
+	script::completions::search-package $buf -repo:$repo -dir:$dir `
 	| sort-object -unique `
 	| script::quote
 }
 
 # Repo parameters
-"clean", "info", "install", "list", "remove", "search", "update" | foreach-object {
+"info", "install", "search", "update" | foreach-object {
 	Register-ArgumentCompleter -CommandName "ppkg-$_" -ParameterName repo -ScriptBlock {
 		param($_a, $_b, $buf)
 		$buf = script::normalize-buf $buf
@@ -84,28 +97,53 @@ function :complete-package {
 	}
 }
 
-# package completions
-"info", "install", "search" | foreach-object {
-	Register-ArgumentCompleter -CommandName "ppkg-$_" -ParameterName package -ScriptBlock {
-		param($_a, $_b, $buf, $_d, $params)
-		$repo = $params["repo"]
-		script::complete-package $buf -repo:$repo -dir $script:settings.repos
-	}
+# installed repo completions
+Register-ArgumentCompleter -CommandName ppkg-clean, ppkg-list -ParameterName repo -ScriptBlock {
+	param($_a, $_b, $buf)
+	$buf = script::normalize-buf $buf
+	$buf += "*"
+
+	Get-ChildItem -ea ignore -Name -Directory -lp $script:settings.installed `
+	| where-object { $_ -like $buf } `
+	| script::quote
 }
 
+# package completions
+Register-ArgumentCompleter -CommandName ppkg-info, ppkg-search -ParameterName package -ScriptBlock {
+	param($_a, $_b, $buf, $_d, $params)
+	$repo = $params["repo"]
+	script::complete-package $buf -repo:$repo -dir $script:settings.repos
+}
+
+
 # installed package completions
-"clean", "remove", "update" | foreach-object {
-	Register-ArgumentCompleter -CommandName "ppkg-$_" -ParameterName package -ScriptBlock {
-		param($_a, $_b, $buf, $_d, $params)
-		$repo = $params["repo"]
-		script::complete-package $buf -repo:$repo -dir $script:settings.installed
-	}
+Register-ArgumentCompleter -CommandName ppkg-clean, ppkg-remove, ppkg-update -ParameterName package -ScriptBlock {
+	param($_a, $_b, $buf, $_d, $params)
+	$repo = $params["repo"]
+	script::complete-package $buf -repo:$repo -dir $script:settings.installed
 }
 
 Register-ArgumentCompleter -CommandName ppkg-list, ppkg-search -ParameterName pattern -ScriptBlock {
 	param($_a, $_b, $buf, $_d, $params)
 	$repo = $params["repo"]
 	script::complete-package $buf -repo:$repo -dir $script:settings.installed
+}
+
+# not installed package completions
+Register-ArgumentCompleter -CommandName ppkg-install -ParameterName package -ScriptBlock {
+	param($_a, $_b, $buf, $_d, $params)
+
+	$repo = $params["repo"]
+	$installed = [Collections.Generic.HashSet[string]]::new()
+
+	foreach($p in script::completions::search-package $buf -repo:$repo -dir $script:settings.installed) {
+		[void] $installed.add($p.ToUpperInvariant())
+	}
+
+	script::completions::search-package $buf -repo:$repo -dir $script:settings.repos `
+	| where-object { $installed.add($_.ToUpperInvariant()) } `
+	| sort-object `
+	| script::quote
 }
 
 Register-ArgumentCompleter -CommandName ppkg-where -ParameterName shim -ScriptBlock {
