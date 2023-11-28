@@ -21,7 +21,7 @@
 		"lib/logging.ps1"
 		"lib/package.ps1"
 		"lib/shims.ps1"
-		"lib/ui-utility.ps1"
+		"lib/utility.ps1"
 		# Commands
 		"cmd/ppkg-add-repo.ps1", "cmd/ppkg-clean.ps1"
 		"cmd/ppkg-info.ps1", "cmd/ppkg-install.ps1"

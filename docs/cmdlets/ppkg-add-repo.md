@@ -21,7 +21,6 @@ The `ppkg-add-repo` cmdlet installs a repository through git.
 
 The repository url must point to a git repository.
 
-
 ## EXAMPLES
 
 ### Example 1: Add a new repository

@@ -20,6 +20,9 @@
 					<TableColumnHeader>
 						<Label>Installed</Label>
 					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Description</Label>
+					</TableColumnHeader>
 				</TableHeaders>
 				<TableRowEntries>
 					<TableRowEntry>
@@ -34,7 +37,11 @@
 								<PropertyName>repo</PropertyName>
 							</TableColumnItem>
 							<TableColumnItem>
-								<ScriptBlock>$_.IsInstalled($false) ? "yes" : "no"</ScriptBlock>
+								<ScriptBlock>$_.IsInstalled($false) ? "yes" :
+								"no"</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>description</PropertyName>
 							</TableColumnItem>
 						</TableColumnItems>
 					</TableRowEntry>

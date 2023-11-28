@@ -865,10 +865,10 @@
     </command:details>
     <maml:description>
       <maml:para>The `ppkg-search` cmdlet searches for packages from installed repositories.</maml:para>
-      <maml:para>By default packages are searched by their names and names of their binaries. - To search for binary names only, use the `-bin` option.</maml:para>
+      <maml:para>By default packages are searched by their names, names of their binaries and words in their descriptions. - To search for binary names only, use the `-bin` option.</maml:para>
       <maml:para>- To search for package names only, use the `-package` option.</maml:para>
       <maml:para></maml:para>
-      <maml:para>The options `-query`, `-bin` and `-package` all accept wildcard patterns.</maml:para>
+      <maml:para>The options `-pattern`, `-bin` and `-package` all accept wildcard patterns.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -902,9 +902,9 @@
           <maml:description>
             <maml:para>Specify a repository</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -913,9 +913,9 @@
       <command:syntaxItem>
         <maml:name>ppkg-search</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>query</maml:name>
+          <maml:name>pattern</maml:name>
           <maml:description>
-            <maml:para>The package name or the name of an executable to search for (accepts glob)</maml:para>
+            <maml:para>The package name, a keyword or the name of an executable to search for (accepts glob)</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -929,9 +929,9 @@
           <maml:description>
             <maml:para>Specify a repository</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -964,9 +964,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>query</maml:name>
+        <maml:name>pattern</maml:name>
         <maml:description>
-          <maml:para>The package name or the name of an executable to search for (accepts glob)</maml:para>
+          <maml:para>The package name, a keyword or the name of an executable to search for (accepts glob)</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -980,9 +980,9 @@
         <maml:description>
           <maml:para>Specify a repository</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

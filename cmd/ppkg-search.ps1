@@ -1,8 +1,8 @@
 function ppkg-search {
 	[CmdletBinding(DefaultParameterSetName = "fuzzy")]
 	param (
-		[Parameter(Mandatory, Position = 0, ValueFromRemainingArguments, ParameterSetName = "fuzzy", HelpMessage = "The package name or the name of an executable to search for (accepts glob)")]
-		[string[]] $query,
+		[Parameter(Mandatory, Position = 0, ValueFromRemainingArguments, ParameterSetName = "fuzzy", HelpMessage = "The package name, a keyword or the name of an executable to search for (accepts glob)")]
+		[string[]] $pattern,
 
 		[Parameter(ParameterSetName = "not-fuzzy", HelpMessage = "Name of the package (accepts glob)")]
 		[string[]] $package,
@@ -11,7 +11,7 @@ function ppkg-search {
 		[string[]] $bin,
 
 		[Parameter(HelpMessage = "Specify a repository")]
-		[string] $repo
+		[string[]] $repo
 	)
 
 	try {
@@ -24,8 +24,8 @@ function ppkg-search {
 function :ppkg-search {
 	[CmdletBinding(DefaultParameterSetName = "fuzzy")]
 	param (
-		[Parameter(Mandatory, Position = 0, ValueFromRemainingArguments, ParameterSetName = "fuzzy", HelpMessage = "The package name or the name of an executable to search for (accepts glob)")]
-		[string[]] $query,
+		[Parameter(Mandatory, Position = 0, ValueFromRemainingArguments, ParameterSetName = "fuzzy", HelpMessage = "The package name, a keyword or the name of an executable to search for (accepts glob)")]
+		[string[]] $pattern,
 
 		[Parameter(ParameterSetName = "not-fuzzy", HelpMessage = "Name of the package (accepts glob)")]
 		[string[]] $package,
@@ -34,53 +34,81 @@ function :ppkg-search {
 		[string[]] $bin,
 
 		[Parameter(HelpMessage = "Specify a repository")]
-		[string] $repo
+		[string[]] $repo
 	)
 
 	$ErrorActionPreference = "stop"
-	if($query) {
-		$bin = $query
-		$package = $query
+	$keywords = script::filter $pattern | foreach-object {
+		$s = [Regex]::escape($_)
+		$opts = [Text.RegularExpressions.RegexOptions]::Compiled -bor
+		[Text.RegularExpressions.RegexOptions]::CultureInvariant -bor
+		[Text.RegularExpressions.RegexOptions]::IgnoreCase -bor
+		[Text.RegularExpressions.RegexOptions]::NonBacktracking
+
+		[Regex]::new("\b${s}\b", $opts)
 	}
-	$bin = $bin | script::escape-invalidpattern
-	$package = $package | script::escape-invalidpattern
-	$repo = $repo | script::escape-invalidpattern
+
+	if($pattern) {
+		$bin = $pattern
+		$package = $pattern
+	}
+
+	$bin = script::filter $bin | foreach-object {
+		$ext = split-path -extension $_
+		if([WildcardPattern]::ContainsWildcardCharacters($ext)) {
+			$_
+		} else {
+			split-path -leafBase $_
+		}
+	} | script::escape-invalidpattern
+
+	$package = script::filter $package | script::escape-invalidpattern
+	$repo = script::filter $repo | script::escape-invalidpattern
 
 	get-childitem -lp $script:settings.repos `
-	| where-object { !$repo -or $_.name -eq $repo } `
+	| where-object { !$repo -or $_.name -in $repo } `
 	| foreach-object {
 		$r = $_.name
 		get-childitem -recurse -lp $_ -filter *.json `
 		| foreach-object {
 			$path = $_
+			$doParse = $bin.count -ne 0 -or $keywords.count -ne 0
+			$isMatch = $false
 
 			foreach($name in $package) {
 				if($_.basename -like $name -or $_.basename -eq $name) {
-					try {
-						$p = [Package]::ParseFile($path, $r)
-						return $p
-					} catch {
-						warn "failed to parse manifest at ${path}: $_"
-						return
-					}
+					$doParse = $isMatch = $true
+					break
 				}
 			}
 
-			if($bin) {
-				try {
-					$p = [Package]::ParseFile($path, $r)
-					foreach($name in $p.bin | split-path -leaf) {
-						$basename = split-path -leafbase $name
-						foreach($b in $bin) {
-							if($name -like $b -or $name -eq $b -or $basename -like $b -or $basename -eq $b) {
-								return $p
-							}
-						}
-					}
-				} catch {
-					warn "failed to parse manifest at ${path}: $_"
+			if(!$doParse) {
+				return
+			}
+
+			try {
+				$pkg = [Package]::ParseFile($path, $r)
+			} catch {
+				warn "error parsing manifest at ${path}: $_"
+				return
+			}
+
+			if($isMatch) {
+				return $pkg
+			}
+
+			foreach($k in $keywords) {
+				if($pkg.description -match $k) {
+					return $pkg
 				}
 			}
-		}
+			foreach($binName in $pkg.bin | split-path -leafBase) {
+				foreach($b in $bin) {
+					if($binName -like $b -or $binName -eq $b) {
+						return $pkg
+					}
+				}
+			}
+  }
 	}
 }

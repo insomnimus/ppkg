@@ -102,7 +102,7 @@ function :complete-package {
 	}
 }
 
-Register-ArgumentCompleter -CommandName ppkg-list -ParameterName pattern -ScriptBlock {
+Register-ArgumentCompleter -CommandName ppkg-list, ppkg-search -ParameterName pattern -ScriptBlock {
 	param($_a, $_b, $buf, $_d, $params)
 	$repo = $params["repo"]
 	script::complete-package $buf -repo:$repo -dir $script:settings.installed

@@ -1,6 +1,13 @@
+param (
+	[switch] $publish
+)
+
 $cmdcHash = "C011F477FFF03A608AE33AFC51BFCC3A0F936233DC848C7D4AEC334B3618DDF0"
 
 function build {
+	[CmdletBinding()]
+	param()
+
 	$ErrorActionPreference = "stop"
 	new-item -type directory -force libdll, libexec | out-null
 	remove-item libdll/*, PPKG/bin -recurse -force -ea ignore
@@ -40,9 +47,32 @@ function build {
 	"all done"
 }
 
+function publish {
+	[CmdletBinding()]
+	param()
+
+	$ErrorActionPreference = "stop"
+	script:build
+	if(test-path module) {
+		remove-item -recurse -force module
+	}
+	$null = new-item -type directory module
+
+	copy-item -recurse -force ppkg.psd1, ppkg.psm1, completions.ps1,
+	cmd, lib, libdll, libexec,
+	format, help/en-us, LICENSE `
+		-destination module
+
+	"built the module into $PSScriptRoot/module"
+}
+
 push-location -lp $PSScriptRoot
 try {
-	script:build
+	if($publish) {
+		script:publish
+	} else {
+		script:build
+	}
 } catch {
 	write-error "error: $_"
 	exit 1

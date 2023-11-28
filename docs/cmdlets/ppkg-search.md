@@ -14,22 +14,22 @@ Searches for packages from installed repositories.
 
 ### fuzzy (Default)
 ```
-ppkg-search [-query] <String[]> [-repo <String>] [<CommonParameters>]
+ppkg-search [-pattern] <String[]> [-repo <String[]>] [<CommonParameters>]
 ```
 
 ### not-fuzzy
 ```
-ppkg-search [-package <String[]>] [-bin <String[]>] [-repo <String>] [<CommonParameters>]
+ppkg-search [-package <String[]>] [-bin <String[]>] [-repo <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 The `ppkg-search` cmdlet searches for packages from installed repositories.
 
-By default packages are searched by their names and names of their binaries.
+By default packages are searched by their names, names of their binaries and words in their descriptions.
 - To search for binary names only, use the `-bin` option.
 - To search for package names only, use the `-package` option.
 
-The options `-query`, `-bin` and `-package` all accept wildcard patterns.
+The options `-pattern`, `-bin` and `-package` all accept wildcard patterns.
 
 ## EXAMPLES
 
@@ -85,8 +85,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -query
-The package name or the name of an executable to search for (accepts glob)
+### -pattern
+The package name, a keyword or the name of an executable to search for (accepts glob)
 
 ```yaml
 Type: String[]
@@ -104,7 +104,7 @@ Accept wildcard characters: False
 Specify a repository
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

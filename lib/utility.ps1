@@ -51,3 +51,19 @@ function :escape-invalidpattern {
 		}
 	}
 }
+
+function :filter {
+	[CmdletBinding()]
+	param (
+		[Parameter(Position = 0, ValueFromPipeline)]
+		[PSObject[]] $obj
+	)
+
+	process {
+		foreach($o in $obj) {
+			if($o) {
+				$o
+			}
+		}
+	}
+}
