@@ -1,0 +1,54 @@
+{
+  "name": "all",
+  "on": {
+    "push": {
+      "paths-ignore": [
+        "**.md",
+        "LICENSE"
+      ]
+    },
+    "pull_request": {
+      "paths-ignore": [
+        "**.md",
+        "LICENSE"
+      ]
+    }
+  },
+  "jobs": {
+    "build": {
+      "runs-on": "windows-latest",
+      "steps": [
+        {
+          "name": "checkout",
+          "uses": "actions/checkout@v3"
+        },
+        {
+          "name": "build",
+          "run": "./.github/scripts/build.ps1 -outFile ppkg.zip"
+        }
+      ]
+    },
+    "release": {
+      "name": "Create GitHub Release",
+      "needs": "build",
+      "if": "github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')",
+      "runs-on": "windows-latest",
+      "steps": [
+        {
+          "name": "checkout",
+          "uses": "actions/checkout@v3",
+          "with": {
+            "fetch-depth": 0
+          }
+        },
+        {
+          "name": "create github release",
+          "env": {
+            "GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
+          },
+          "run": "gh release create --notes-from-tag ${{ github.ref_name }} ppkg.zip --generate-notes --title ${{ github.ref_name }}"
+        }
+      ]
+    }
+  }
+}
