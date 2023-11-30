@@ -62,7 +62,7 @@
           "env": {
             "GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
           },
-          "run": "gh release create --notes-from-tag ${{ github.ref_name }} artifacts/*/* --generate-notes --title ${{ github.ref_name }}"
+          "run": "gh release create --notes-from-tag ${{ github.ref_name }} (Get-ChildItem -name -recurse -file artifacts/) --generate-notes --title ${{ github.ref_name }}"
         }
       ]
     }
