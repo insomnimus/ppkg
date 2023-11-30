@@ -1,6 +1,8 @@
 # PPKG
 PPKG is a package manager for Windows.
 
+- [Documentation](docs/index.md)
+
 ## Features
 - Install, uninstall and update packages.
 - Completely transactional.
