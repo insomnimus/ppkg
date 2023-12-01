@@ -1,3 +1,8 @@
+---
+title: Package Actions
+lang: en
+---
+
 # Actions
 An action is a safe command you can use to perform actions during installation steps.
 
@@ -11,17 +16,17 @@ An action in a package manifest is a single command string in a syntax similar t
 
 An action is simply a command name and arguments separated by whitespace.
 You can quote arguments to include whitespace in them using single or double quotes.
-You can escape characters with the Powershell escape character `````.
+You can escape characters with the Powershell escape character <code>`</code>.
 Escapes in a single quote quoted strings are treated literally; no escaping is done.
 Otherwise, some escape patterns are recognized:
-- ```0``: A null byte.
-- ```a``: Anchor.
-- ```b``: Backspace.
-- ```f``: Form feed.
-- ```n``: Line feed (lf; new line).
-- ```r``: Carriage return (cr).
-- ```t``: Horizontal tab.
-- ```v``: Vertical tab.
+- <code>`0</code>: A null byte.
+- <code>`a</code>: Anchor.
+- <code>`b</code>: Backspace.
+- <code>`f</code>: Form feed.
+- <code>`n</code>: Line feed (lf; new line).
+- <code>`r</code>: Carriage return (cr).
+- <code>`t</code>: Horizontal tab.
+- <code>`v</code>: Vertical tab.
 - Any other escape: the character itself; the escape character is omitted.
 
 ### Examples

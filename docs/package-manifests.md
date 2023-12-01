@@ -1,3 +1,8 @@
+---
+title: Package Manifests
+lang: en
+---
+
 [Action]: #action
 [Resource]: #resource
 

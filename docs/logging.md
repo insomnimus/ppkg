@@ -1,3 +1,8 @@
+---
+title: Logging
+lang: en
+---
+
 # Logging
 PPKG creates logging events you can subscribe to and run arbitrary code on.
 

@@ -14,33 +14,13 @@ function exec {
 	}
 }
 
-function process-cmdletHelp {
-	[CmdletBinding()]
-	[OutputType([string])]
-	param (
-		[Parameter(ValueFromPipeline)]
-		[string] $s
-	)
-
-	begin {
-		$n = 0
-	}
-	process {
-		if($n -ge 2) {
-			$s
-		} elseif($s -eq "---") {
-			$n++
-		}
-	}
-}
-
 function download-mars {
 	$url, $ext = if($isWindows) {
-		"https://github.com/insomnimus/mars/releases/download/v0.5.0/mars-i686-pc-windows-msvc.zip", ".zip"
+		"https://github.com/insomnimus/mars/releases/download/v0.6.0/mars-i686-pc-windows-msvc.zip", ".zip"
 	} elseif($isMacos) {
-		"https://github.com/insomnimus/mars/releases/download/v0.5.0/mars-x86_64-apple-darwin.tar.xz", ".tar.xz"
+		"https://github.com/insomnimus/mars/releases/download/v0.6.0/mars-x86_64-apple-darwin.tar.xz", ".tar.xz"
 	} else {
-		"https://github.com/insomnimus/mars/releases/download/v0.5.0/mars-x86_64-unknown-linux-musl.tar.xz", ".tar.xz"
+		"https://github.com/insomnimus/mars/releases/download/v0.6.0/mars-x86_64-unknown-linux-musl.tar.xz", ".tar.xz"
 	}
 
 	$temp = new-temporaryFile
@@ -71,13 +51,6 @@ try {
 	./build.ps1 -publish
 	$mars = script:download-mars
 	$null = script:exec $mars -HSNlen -O module/docs ./docs
-	foreach($f in get-childitem docs/cmdlets -filter *.md) {
-		$name = $f.basename
-		$null = get-content -lp $f `
-		| script:process-cmdletHelp `
-		| &$mars -HSNlen -o "module/docs/cmdlets/$name.html" -
-		# ^^^ don't use script:exec there, else it hangs waiting for input
-	}
 
 	del -lp $mars
 	cd module

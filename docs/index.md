@@ -1,3 +1,8 @@
+---
+title: Doc Pages
+lang: en
+---
+
 # PPKG Documentation
 Check out the pages below:
 - [individual commands](cmdlets/)
