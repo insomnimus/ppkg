@@ -86,7 +86,7 @@ Arguments:
 
 If the `--hard` flag is specified, the `pointsTo` argument must point to an existing file.
 If the `--junction` flag is specified, the `pointsTo` argument must point to an existing directory.
-If neither `--hard` nor `--junction` is specified, the type of link will be inferred from the `pointsTo>` argument:
+If neither `--hard` nor `--junction` is specified, the type of link will be inferred from the `pointsTo` argument:
 - If it's a directory, a junction will be created.
 - If it's a file, a hard link will be created.
 
