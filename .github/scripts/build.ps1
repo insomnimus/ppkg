@@ -14,13 +14,13 @@ function exec {
 	}
 }
 
-function download-mars {
+function download-mars($version) {
 	$url, $ext = if($isWindows) {
-		"https://github.com/insomnimus/mars/releases/download/v0.6.0/mars-i686-pc-windows-msvc.zip", ".zip"
+		"https://github.com/insomnimus/mars/releases/download/v$version/mars-i686-pc-windows-msvc.zip", ".zip"
 	} elseif($isMacos) {
-		"https://github.com/insomnimus/mars/releases/download/v0.6.0/mars-x86_64-apple-darwin.tar.xz", ".tar.xz"
+		"https://github.com/insomnimus/mars/releases/download/v$version/mars-x86_64-apple-darwin.tar.xz", ".tar.xz"
 	} else {
-		"https://github.com/insomnimus/mars/releases/download/v0.6.0/mars-x86_64-unknown-linux-musl.tar.xz", ".tar.xz"
+		"https://github.com/insomnimus/mars/releases/download/v$version/mars-x86_64-unknown-linux-musl.tar.xz", ".tar.xz"
 	}
 
 	$temp = new-temporaryFile
@@ -49,7 +49,7 @@ function download-mars {
 
 try {
 	./build.ps1 -publish
-	$mars = script:download-mars
+	$mars = script:download-mars 0.7.1
 	$null = script:exec $mars -HSNlen -O module/docs ./docs
 
 	del -lp $mars
