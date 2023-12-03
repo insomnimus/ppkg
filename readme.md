@@ -29,6 +29,8 @@ If your version is older than 7.0.0, follow the instructions from [this page](ht
 - Restart Powershell.
 - Register a repository: `ppkg-add-repo insomnia https://github.com/insomnimus/ppkg-repo`.
 
+More documentation is available [here](docs/getting-started.md).
+
 For more on Powershell profiles, see [this page from MSDN](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.3).
 
 ## Build From Source
