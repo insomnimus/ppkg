@@ -13,7 +13,7 @@ Displays information about an app.
 ## SYNTAX
 
 ```
-ppkg-info [-package] <String> [-repo <String>] [<CommonParameters>]
+ppkg-info [-package] <String> [-repo <String>] [-online] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -27,6 +27,21 @@ PS> ppkg-info aria2
 ```
 
 ## PARAMETERS
+
+### -online
+Open the package homepage with the default web browser
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -package
 Name of the package
