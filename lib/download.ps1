@@ -140,11 +140,13 @@ function :extract {
 	if($isTar) {
 		info "extracting $origName with tar"
 		script::mkdir $dir
-		$out = tar -C $dir -xf $path $selectFiles 2>&1
+		$tar = $script:settings.exec("tar.exe")
+		$out = &$tar -C $dir -xf $path "--" $selectFiles 2>&1
 		assert-ok -ea stop "tar error: $out"
 	} else {
 		info "extracting $origName with 7zip"
-		$out = 7z x -bso0 -bsp0 "-o$dir" $path $selectFiles 2>&1
+		$sz = $script:settings.exec("7z.exe")
+		$out = &$sz x -bso0 -bsp0 -aoa "-o$dir" "--" $path $selectFiles 2>&1
 		assert-ok -ea stop "7zip error: $out"
 	}
 

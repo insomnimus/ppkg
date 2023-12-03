@@ -26,6 +26,8 @@ If your version is older than 7.0.0, follow the instructions from [this page](ht
 - Download the release archive (`ppkg.zip`) from the [releases page](https://github.com/insomnimus/ppkg/releases) ([here's the latest release](https://github.com/insomnimus/ppkg/releases/latest)).
 - Extract it to some location with the `ppkg` directory name (suggestion is to put somewhere in `$env:PSMODULEPATH` for automatic loading).
 - If you extracted to somewhere outside `$env:PSMODULEPATH`, add `import-module -disableNameChecking D:/path/to/ppkg/ppkg.psd1` in your Powershell profile.
+- Restart Powershell.
+- Register a repository: `ppkg-add-repo insomnia https://github.com/insomnimus/ppkg-repo`.
 
 For more on Powershell profiles, see [this page from MSDN](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.3).
 

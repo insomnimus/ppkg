@@ -51,8 +51,23 @@ class Settings {
 	}
 
 	# Returns the path of a bundled executable (internal use)
-	[string] exec([string] $bin) {
-		return (join-path $PSScriptRoot libexec $bin)
+	[string] exec([string] $name) {
+		if(!$name.EndsWith(".exe")) {
+			$name += ".exe"
+		}
+		$paths = @(
+			join-path $PSScriptRoot libexec $name
+			join-path $env:SystemRoot system32 $name
+			get-command -CommandType Application $name -ea ignore | select-object -First 1 -ExpandProperty Path
+		)
+
+		foreach($path in $paths) {
+			if(test-path -lp $path) {
+				return $path
+			}
+		}
+
+		throw "could not locate a $name executable"
 	}
 
 	[Repo[]] GetRepos([string[]] $name) {

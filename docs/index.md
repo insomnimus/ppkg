@@ -5,6 +5,7 @@ lang: en
 
 # PPKG Documentation
 Check out the pages below:
+- [Getting Started](getting-started.md)
 - [individual commands](cmdlets/)
 - [Package Manifests](package-manifests.md)
 - [Package Actions](actions.md)
