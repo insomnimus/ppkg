@@ -1,5 +1,5 @@
 # Getting Started
-- Download the release archive (`ppkg.zip`) from the [releases page](https://github.com/insomnimus/ppkg/releases) ([here's the latest release](https://github.com/insomnimus/ppkg/releases/latest)).
+- Download the release archive (`ppkg-x32.zip` or `ppkg-x64.zip`) from the [releases page](https://github.com/insomnimus/ppkg/releases) ([here's the latest release](https://github.com/insomnimus/ppkg/releases/latest)).
 - Extract it to some location with the `ppkg` directory name (suggestion is to put somewhere in `$env:PSMODULEPATH` for automatic loading).
 - If you extracted to somewhere outside `$env:PSMODULEPATH`, add `import-module -disableNameChecking D:/path/to/ppkg/ppkg.psd1` in your Powershell profile.
 - Restart Powershell.
