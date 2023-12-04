@@ -49,3 +49,7 @@ cd ppkg
 # The module will be created into ./module
 # You can move this directory to a suitable place, all the files inside it are required
 ```
+
+## Note About AlphaFS
+This project uses the [AlphaFS](https://github.com/alphaleonis/AlphaFS) package.
+Because the latest version of AlphaFS isn't on NuGet, this repository vendors AlphaFS source code. The contents of the AlphaFS directory are therefore not property of this project. This project is also not affiliated with AlphaFS.
