@@ -146,13 +146,14 @@ function :ppkg-install {
 						foreach($p in script::ls $path -recurse -tx $tx) {
 							$moveto = join-path $real $p.fullname.substring($path.fullname.length + 1)
 							if(script::exists -not $moveto -tx $tx) {
-								split-path -parent $moveto | script::ensure-dir -tx $tx
+								split-path -parent $moveto.fullname | script::ensure-dir -tx $tx
 								script::mv $_ $moveto -tx $tx
 							}
 						}
      }
 					script::rm -rf $path -tx $tx
 				} else {
+					split-path -parent $real | script::ensure-dir -tx $tx
 					script::mv $path $real -tx $tx
 				}
 

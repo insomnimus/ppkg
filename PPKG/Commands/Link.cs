@@ -60,7 +60,7 @@ public class Link: Command {
 
 		if (this.Hard) {
 			c.Trace($"creating hard link {p} -> {target}");
-			File.CreateHardlinkTransacted(c.Tx, p, target);
+			File.CreateHardLinkTransacted(c.Tx, p, target);
 		} else if (this.Junction) {
 			c.Trace($"creating directory junction {p} -> {target}");
 			Directory.CreateJunction(c.Tx, p, target, true);

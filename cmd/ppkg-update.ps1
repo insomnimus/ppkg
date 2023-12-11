@@ -185,6 +185,7 @@ function :ppkg-update {
 						}
 						script::rm -rf $path -tx $tx
 					} else {
+						split-path -parent $real | script::ensure-dir -tx $tx
 						script::mv $path $real -tx $tx
 					}
 
