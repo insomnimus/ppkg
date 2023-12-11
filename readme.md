@@ -49,3 +49,7 @@ cd ppkg
 # The module will be created into ./module
 # You can move this directory to a suitable place, all the files inside it are required
 ```
+
+## About AlphaFS
+This project uses the [AlphaFS](https://github.com/alphaleonis/AlphaFS) library for transactional filesystem operations.
+Because the latest version on NuGet has some bugs and is incompatible with Dotnet Standard, the source code for AlphaFS is vendored in this project. You can find its license file at [AlphaFS/LICENSE.md](AlphaFS/LICENSE.md).
