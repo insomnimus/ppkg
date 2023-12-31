@@ -42,7 +42,7 @@ function :ppkg-install {
 	$packages = script::ppkg-search -repo:$repo -wa ignore -package $query
 	assert $packages.count -ne 0 "No packages found matching $package"
 
-	$packages = $packages | foreach-object {
+	$packages = $packages | where-object {
 		# filter out already installed packages
 		$installPath = join-path $script:settings.installed $_.repo "$($_.name).json"
 		if(test-path -lp $installPath) {
@@ -52,7 +52,7 @@ function :ppkg-install {
 		} elseif($arch -eq "x64" -and $null -eq $_.x64) {
 			err "${_}: no x64 binary available; but an x32 binary exists"
 		} else {
-			$_
+			$true
 		}
 	}
 

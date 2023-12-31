@@ -101,6 +101,7 @@ function :download {
 				err "downloaded file doesn't exist ($file); $errStr"
 			}
 
+			script::check-hash $res -path $file
 			$outResult.value = $file
 			break
 		}
