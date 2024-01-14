@@ -1,6 +1,6 @@
 @{
 	RootModule = "ppkg.psm1"
-	ModuleVersion = "0.3.1"
+	ModuleVersion = "0.3.2"
 	GUID = "4f750862-10bd-4ad2-873f-da4141c81440"
 	Author = "Taylan Gökkaya"
 	Copyright = "MIT License Copyright (c) 2023 Taylan Gökkaya <insomnimus@proton.me>"

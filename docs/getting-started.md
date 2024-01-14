@@ -4,6 +4,10 @@
 - If you extracted to somewhere outside `$env:PSMODULEPATH`, add `import-module -disableNameChecking D:/path/to/ppkg/ppkg.psd1` in your Powershell profile.
 - Restart Powershell.
 
+PPKG will install packages in the directory specified by the `PPKG_ROOT` environment variable if it exists; if it doesn't, the default is `%SYSTEMDRIVE%/ppkg`.
+Make sure that the `bin` directory of this path is in your `PATH`.
+For example, if you set the `PPKG_ROOT` environment variable, add `%PPKG_ROOT%/bin` to your `PATH`.
+
 ## Adding Repositories
 By default, PPKG does not install any repository. You'll have to add the ones you want.
 
@@ -29,7 +33,7 @@ Let's get some information about the `mars` package from Insomnia's repository (
 PS> ppkg-info mars
 name        : mars
 repo        : insomnia
-version     : 0.7.1
+version     : 0.13.0
 description : A github flavored markdown to html converter
 homepage    : https://github.com/insomnimus/mars
 license     : MIT

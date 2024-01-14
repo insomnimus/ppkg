@@ -110,7 +110,7 @@ try {
 	}
 
 	./build.ps1 -publish
-	$mars = script:download-mars 0.7.1
+	$mars = script:download-mars 0.13.0
 	$null = script:exec $mars -HSNlen -O module/docs ./docs
 
 	remove-item -lp $mars
