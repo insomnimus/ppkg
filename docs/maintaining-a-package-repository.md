@@ -8,7 +8,7 @@ lang: en
 ## Github Based Packages
 PPKG offers the [`Update-PPKGManifest`](cmdlets/Update-PPKGManifest.md) cmdlet for automatically updating a package manifest for packages that download from github releases.
 
-The cmdlet looks for the `githubPattern` field of a pcakages x32 and x64 fields.
+The cmdlet looks for the `githubPattern` field of a package's x32 and x64 fields.
 If the field exists, the Github REST API will be probed for the latest release of the package, where the user/org and the repository name are extracted from the packages URL in the x32 or x64 fields.
 
 If the version obtained from the API call does not match the current version, the package is updated:
