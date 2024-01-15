@@ -16,7 +16,7 @@ Manifests have a `.json` file extension.
 | homepage | URI string | The homepage of the package | no |
 | license | string | the name of the license of the package | yes |
 | bin | string list | List of binaries that the package makes available | yes |
-| preInstall | [Action](#action) list | List of [actions][#action] that are to be executed after download and before install | false |
+| preInstall | [Action](#action) list | List of [actions](#action) that are to be executed after download and before install | false |
 | x32 | [Resource](#resource) | The [resource](#resource) for x32 installations | no\* |
 | x64 | [Resource](#resource) | The [resource](#resource) for x64 installations | no\* |
 
