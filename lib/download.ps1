@@ -136,12 +136,18 @@ function :extract {
 		$isTar = $true
 	}
 	$dir = join-path (split-path $path) $name
-	$isTar = $isTar -or $ext -in ".txz", ".tgz", ".tlz", ".tz"
+	$isTar = $isTar -or $ext -in ".txz", ".tgz", ".tlz", ".tz", ".tzst"
 
 	if($isTar) {
 		info "extracting $origName with tar"
 		script::mkdir $dir
-		$tar = $script:settings.exec("tar.exe")
+		# Prefer bsdtar over tar
+		$tar = $null
+		try {
+			$tar = $script:settings.exec("bsdtar.exe")
+		} catch {
+			$tar = $script:settings.exec("tar.exe")
+		}
 		$out = &$tar -C $dir -xf $path "--" $selectFiles 2>&1
 		assert-ok -ea stop "tar error: $out"
 	} else {
